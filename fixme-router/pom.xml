@@ -11,9 +11,7 @@
     <artifactId>fixme</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.fixme</groupId>
   <artifactId>fixme-router</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>fixme-router</name>
   <url>http://maven.apache.org</url>
   <!-- ########################################################################## -->
