@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!-- JGUYET MAVEN POM FILE --> 
+  
+  <!-- ########################################################################## -->
+  <!-- MAVEN PROJECT HDR -->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.fixme</groupId>
+    <artifactId>fixme</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>fixme-core</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>fixme-core</name>
+  <url>http://maven.apache.org</url>
+<!-- ########################################################################## -->
+  <!-- UTF-8 CONVERTION -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- ########################################################################## -->
+  <!-- LIBRARIES DEPENDENCIES -->
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+	    <groupId>ch.qos.logback</groupId><!-- with org.slf4j -->
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.2.3</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.reflections</groupId>
+    	<artifactId>reflections</artifactId>
+	</dependency>
+	<dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator-annotation-processor</artifactId>
+        <version>4.1.0.Final</version>
+    </dependency>
+	<dependency>
+	    <groupId>javax.validation</groupId>
+	    <artifactId>validation-api</artifactId>
+	    <version>1.1.0.Final</version>
+	</dependency>
+  </dependencies>
+  <!-- END LIBRARIES DEPENDENCIES -->
+  <!-- ########################################################################## -->
+  
+   <build>
+   <plugins>
+   	 <!-- ###################################################################### -->
+     <!-- COPIES -->
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <!-- ###################################################################### -->
+      	<!-- COPIE DEPENDENCIES -->
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/../../target/${project.artifactId}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+          <!-- END COPY DEPENDENCIES -->
+          <!-- ###################################################################### -->
+      	  <!-- COPIE JAR -->
+          <execution>
+            <id>copy-${project.artifactId}.jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+               <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <destFileName>${project.artifactId}.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/../../target/${project.artifactId}</outputDirectory>
+            </configuration>
+          </execution>
+          <!-- END COPY JAR -->
+      	  <!-- ######################################################################## -->
+        </executions>
+      </plugin>
+      <!-- END COPIES -->
+      <!-- ###################################################################### -->
+      <!-- START PLUGIN JAR -->
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.0.2</version>
+      <configuration>
+      	<!-- jar file name -->
+      	<finalName>${project.name}</finalName>
+      	<!-- manifest settings -->
+        <archive>
+          <manifest>
+            <addClasspath>false</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+          </manifest>
+        </archive>
+      </configuration>
+      </plugin>
+      <!-- END PLUGIN JAR -->
+      <!-- ######################################################################## -->
+    </plugins>
+  </build>
+</project>

@@ -1,5 +1,4 @@
-/Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/MarketServerHandler.java
+/Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/servers/MarketServerHandler.java
 /Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/RouterProperties.java
 /Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/App.java
-/Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/IASynchronousHandler.java
-/Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/BrokerServerHandler.java
+/Users/jguyet/git/fix-me/fixme-router/src/main/java/org/fixme/router/servers/BrokerServerHandler.java

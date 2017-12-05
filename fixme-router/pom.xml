@@ -32,6 +32,11 @@
 	    <artifactId>logback-classic</artifactId>
 	    <version>1.2.3</version>
 	</dependency>
+	<dependency>
+	    <groupId>org.fixme</groupId>
+	    <artifactId>fixme-core</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	</dependency>
   </dependencies>
   <!-- END LIBRARIES DEPENDENCIES -->
   <!-- ########################################################################## -->

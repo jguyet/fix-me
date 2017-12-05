@@ -1,15 +1,31 @@
 package org.fixme.router;
 
+import org.fixme.core.FixmeSocketServerChannelManager;
+import org.fixme.router.servers.BrokerServerHandler;
+import org.fixme.router.servers.MarketServerHandler;
+
 /**
  * Main application.
  * @author jguyet
  */
 public class App 
 {	
-	public static BrokerServerHandler brokerHandler;
-	public static MarketServerHandler marketHandler;
+	/**
+	 * HANDLERS
+	 */
+	public static BrokerServerHandler	brokerHandler;
+	public static MarketServerHandler	marketHandler;
 	
-	private static boolean stopped = false;
+	/**
+	 * SERVERS
+	 */
+	public static FixmeSocketServerChannelManager	brokerServer;
+	public static FixmeSocketServerChannelManager	marketServer;
+	
+	/**
+	 * STATIC VARS
+	 */
+	public static boolean stopped = false;
 	
     public static void main( String[] args )
     {
@@ -17,39 +33,56 @@ public class App
     	
     	//################################################################################################
     	//BUILD HANDLERS
-    	buildHandlers();
+    	createHandlers();
     	//################################################################################################
-    	//START HANDLERS
-    	runHandlers();
+    	//BUILD SERVERS
+    	buildServers();
+    	//################################################################################################
+    	//INITIALIZE SERVERS
+    	initializeServers();
+    	//################################################################################################
+    	//RUN SERVERS
+    	runServers();
     	//################################################################################################
     	//WAIT STOPPED SIG
     	while (stopped == false) {
     		try { Thread.sleep(500); } catch(Exception e) { e.printStackTrace(); }
     	}
     	//################################################################################################
-    	//STOP HANDLERS
-    	stopHandlers();
+    	//STOP SERVERS
+    	stopServers();
     }
     
-    private static void buildHandlers() {
-    	brokerHandler = new BrokerServerHandler(RouterProperties.BROKER_ASYNCHRONOUS_SERVER_CHANNEL_PORT);
-    	marketHandler = new MarketServerHandler(RouterProperties.MARKET_ASYNCHRONOUS_SERVER_CHANNEL_PORT);
+    private static void createHandlers() {
+    	brokerHandler = new BrokerServerHandler();
+    	marketHandler = new MarketServerHandler();
     }
     
-    private static void runHandlers() {
-    	brokerHandler.run();
-    	marketHandler.run();
+    private static void buildServers() {
+    	brokerServer = new FixmeSocketServerChannelManager(RouterProperties.BROKER_ASYNCHRONOUS_SERVER_CHANNEL_PORT, brokerHandler);
+    	marketServer = new FixmeSocketServerChannelManager(RouterProperties.MARKET_ASYNCHRONOUS_SERVER_CHANNEL_PORT, marketHandler);
     }
     
-    private static void stopHandlers() {
-    	brokerHandler.stop();
-    	marketHandler.stop();
+    private static void initializeServers() {
+    	brokerServer.initialize();
+    	marketServer.initialize();
+    }
+    
+    private static void runServers() {
+    	brokerServer.startOnAcceptSocketChannel();
+    	marketServer.startOnAcceptSocketChannel();
+    }
+    
+    private static void stopServers() {
+    	brokerServer.stopSocketServerChannel();
+    	marketServer.stopSocketServerChannel();
     }
     
     private static void catchSigTerm() {
     	Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
                 public void run() {
+            		App.stopped = true;
                     System.out.println("Inside Add Shutdown Hook");
                 }   
             }); 
