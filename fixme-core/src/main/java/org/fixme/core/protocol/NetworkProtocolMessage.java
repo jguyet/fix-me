@@ -7,7 +7,7 @@ public class NetworkProtocolMessage {
 	/**
 	 * SIZE OF HEADER = INT32 + INT32
 	 */
-	public static final int STATIC_HEADER_LEN = 16;
+	public static final int STATIC_HEADER_LEN = 8;
 	
 	/**
 	 * read message Header<br>

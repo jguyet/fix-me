@@ -1,2 +1,7 @@
-/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/server/BrokerSocket.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/reflection/BrokerClassMessageHandler.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/SocketBroker.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/SocketBrokerHandlerFactory.java
 /Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/App.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/BrokerProperties.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/handler/StartConnectionHandler.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/reflection/BrokerMethodMessageHandler.java

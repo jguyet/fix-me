@@ -26,15 +26,18 @@ public class FixmeSocketChannelManager {
 	 */
 	private static Logger logger = LoggerFactory.getLogger(FixmeSocketChannelManager.class);
 
-	private SocketChannel			channel;
-	private String					ip;
-	private int						port;
+	private SocketChannel						channel;
+	private String								ip;
+	private int									port;
 	private IASynchronousSocketChannelHandler	handler;
 	
-	public FixmeSocketChannelManager(String ip, int port, IASynchronousSocketChannelHandler handler) {
+	private String								moduleName;
+	
+	public FixmeSocketChannelManager(String ip, int port, IASynchronousSocketChannelHandler handler, String moduleName) {
 		this.ip = ip;
 		this.port = port;
 		this.handler = handler;
+		this.moduleName = moduleName;
 	}
 	
 	public void initialize() {
@@ -46,19 +49,18 @@ public class FixmeSocketChannelManager {
 
 				@Override
 				public void completed(Void result, SocketChannel attachment) {
-					logger.info("Connection estabilised on {}:{}", ip, port);
 					handler.onStartConnection(channel);
 				}
 
 				@Override
 				public void failed(Throwable exc, SocketChannel attachment) {
-					logger.error("fail bind SocketChannel on port {}:{}", ip, port);
+					logger.error("{} - fail bind SocketChannel on port {}:{}", moduleName, ip, port);
 					handler.onConnectionClosed(channel);
 				}
 			});
 			
 		} catch (IOException e) {
-			logger.error("fail bind SocketChannel on port {}:{}", this.ip, this.port);
+			logger.error("{} - fail bind SocketChannel on port {}:{}", moduleName, this.ip, this.port);
 			return ;
 		}
 	}
@@ -102,12 +104,12 @@ public class FixmeSocketChannelManager {
 				}
 				
 				if (Validator.validateObject(header) == false) {
-					logger.info("messageId: {} beans not valide.", header.getId());
+					logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
 					startOnReadSocketChannel();
 					return ;
 				}
 				
-				logger.info("messageId: {}, message length: {}", header.getId(), header.getLength());
+				logger.info("{} messageId: {}, message length: {}", moduleName, header.getId(), header.getLength());
 				
 				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, finalbuffer);
 				
@@ -116,14 +118,14 @@ public class FixmeSocketChannelManager {
 					message.deserialize();
 					
 					if (Validator.validateObject(message) == false) {
-						logger.info("messageId: {} beans not valide.", header.getId());
+						logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
 						startOnReadSocketChannel();
 						return ;
 					}
 					
 					handler.onMessageReceived(channel, message);
 				} else {
-					logger.info("messageId: {} doesn't exist.", header.getId());
+					logger.info("{} - messageId: {} doesn't exist.", moduleName, header.getId());
 				}
 				//start to read next message again
 				startOnReadSocketChannel();
@@ -131,7 +133,7 @@ public class FixmeSocketChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, SocketChannel channel) {
-				logger.error("fail to read message from client");
+				logger.error("{} - fail to read message from client", moduleName);
 			}
 
 		});

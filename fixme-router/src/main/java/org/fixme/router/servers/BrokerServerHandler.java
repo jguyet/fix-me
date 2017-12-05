@@ -24,19 +24,18 @@ public class BrokerServerHandler implements IASynchronousSocketChannelHandler {
 	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		
 		ch.write(new AttributeUniqueIdentifiantMessage(ch.getUid()));
-		logger.info("new broker id({})", ch.getUid());
+		logger.info("Router - Accepte connection from Broker from {}", ch.getRemoteAddress());
 	}
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		logger.info("new message on broker id({}) messageId {}", ch.getUid(), message.messageId());
+		logger.info("Router - Broker: BROKERID={}|MSGTYPE={}|MSGCONTENT={}", ch.getUid(), message.getName(), message.toString());
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
-		logger.info("Connection broker closed id({})", ch.getUid());
+		logger.info("Router - Disconnection Broker from {}", ch.getRemoteAddress());
 	}
 	
 }

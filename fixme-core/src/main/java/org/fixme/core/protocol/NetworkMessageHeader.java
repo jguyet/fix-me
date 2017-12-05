@@ -5,11 +5,11 @@ import javax.validation.constraints.Min;
 
 public class NetworkMessageHeader {
 
-	@Max(value=1001)
+	@Max(value=1002)
 	@Min(value=1000)
 	private int id;
 	
-	@Min(value=8)
+	@Min(value=0)
 	@Max(value=2048)
 	private int length;
 	

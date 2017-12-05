@@ -28,6 +28,10 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
+    	<groupId>org.reflections</groupId>
+    	<artifactId>reflections</artifactId>
+	</dependency>
+    <dependency>
 	    <groupId>ch.qos.logback</groupId><!-- with org.slf4j -->
 	    <artifactId>logback-classic</artifactId>
 	    <version>1.2.3</version>

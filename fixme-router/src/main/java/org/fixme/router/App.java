@@ -59,8 +59,8 @@ public class App
     }
     
     private static void buildServers() {
-    	brokerServer = new FixmeSocketServerChannelManager(RouterProperties.BROKER_ASYNCHRONOUS_SERVER_CHANNEL_PORT, brokerHandler);
-    	marketServer = new FixmeSocketServerChannelManager(RouterProperties.MARKET_ASYNCHRONOUS_SERVER_CHANNEL_PORT, marketHandler);
+    	brokerServer = new FixmeSocketServerChannelManager(RouterProperties.BROKER_ASYNCHRONOUS_SERVER_CHANNEL_PORT, brokerHandler, RouterProperties.MODULE_NAME);
+    	marketServer = new FixmeSocketServerChannelManager(RouterProperties.MARKET_ASYNCHRONOUS_SERVER_CHANNEL_PORT, marketHandler, RouterProperties.MODULE_NAME);
     }
     
     private static void initializeServers() {

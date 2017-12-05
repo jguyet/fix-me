@@ -20,6 +20,11 @@ public class AttributeUniqueIdentifiantMessage extends NetworkMessage {
 		return MESSAGE_ID;
 	}
 	
+	@Override
+	public String getName() {
+		return "AttributeUniqueIdentifiantMessage";
+	}
+	
 	public AttributeUniqueIdentifiantMessage(int id) {
 		super(null);
 		this.id = id;
@@ -40,6 +45,11 @@ public class AttributeUniqueIdentifiantMessage extends NetworkMessage {
 	@Override
 	public void deserialize() {
 		this.id = this.buffer.getInt();
+	}
+
+	@Override
+	public String toString() {
+		return "ID=" + this.id;
 	}
 
 }

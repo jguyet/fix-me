@@ -6,18 +6,20 @@ import org.fixme.core.protocol.NetworkMessage;
 public interface IASynchronousSocketChannelHandler {
 	/**
 	 * call on accept new connection
-	 * @param ch AsynchronousSocketChannel
+	 * @param ch SocketChannel
 	 */
 	public void onStartConnection(SocketChannel ch);
 	
 	/**
 	 * call on receive new buffered message
+	 * @oaram1 SocketChannel
+	 * @param2 NetworkMessage
 	 */
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message);
 	
 	/**
 	 * called on connection as closed
-	 * @param ch
+	 * @param ch SocketChannel
 	 */
 	public void onConnectionClosed(SocketChannel ch);
 }

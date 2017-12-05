@@ -22,27 +22,30 @@ public class FixmeSocketServerChannelManager {
 	/**
 	 * FINAL STATIC VARS
 	 */
-	private static final int				SIZE_READ_BYTEBUFFER_ALLOCATED = 2048;
+	private static final int							SIZE_READ_BYTEBUFFER_ALLOCATED = 2048;
 	
 	/**
 	 * LOGGER
 	 */
-	private static Logger					logger = LoggerFactory.getLogger(FixmeSocketServerChannelManager.class);
+	private static Logger								logger = LoggerFactory.getLogger(FixmeSocketServerChannelManager.class);
 	
 	/**
 	 * VARS
 	 */
-	private AsynchronousServerSocketChannel channelListener;
-	private int								port;
+	private AsynchronousServerSocketChannel 			channelListener;
+	private int											port;
 	private IASynchronousSocketChannelHandler			handler;
+	
+	private String										moduleName;
 	
 	/**
 	 * FixmeServerManager constructor<br>
 	 * @param port The local address to bind the socket
 	 */
-	public FixmeSocketServerChannelManager(int port, IASynchronousSocketChannelHandler handler) {
+	public FixmeSocketServerChannelManager(int port, IASynchronousSocketChannelHandler handler, String moduleName) {
 		this.port = port;
 		this.handler = handler;
+		this.moduleName = moduleName;
 	}
 	
 	/**
@@ -52,10 +55,10 @@ public class FixmeSocketServerChannelManager {
 		try {
 		channelListener = AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(port));
 		} catch (IOException e) {
-			logger.error("fail bind channelListener on port {}", this.port);
+			logger.error("{} - fail bind channelListener on port {}", moduleName, this.port);
 			return ;
 		}
-		logger.info("Connection estabilised on port {}", this.port);
+		logger.info("{} - Connection estabilised on port {}", moduleName, this.port);
 	}
 	
 	/**
@@ -79,7 +82,7 @@ public class FixmeSocketServerChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, AsynchronousServerSocketChannel serverSock) {
-				logger.error("fail to accept a connection");
+				logger.error("{} - fail to accept a connection", moduleName);
 			}
 		
 		});
@@ -124,12 +127,12 @@ public class FixmeSocketServerChannelManager {
 				}
 				
 				if (Validator.validateObject(header) == false) {
-					logger.info("messageId: {} beans not valide.", header.getId());
+					logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
 					startOnReadSocketChannel(channel);
 					return ;
 				}
 				
-				logger.info("messageId: {}, message length: {}", header.getId(), header.getLength());
+				logger.info("{} - messageId: {}, message length: {}", moduleName, header.getId(), header.getLength());
 				
 				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, finalbuffer);
 				
@@ -138,14 +141,14 @@ public class FixmeSocketServerChannelManager {
 					message.deserialize();
 					
 					if (Validator.validateObject(message) == false) {
-						logger.info("messageId: {} beans not valide.", header.getId());
+						logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
 						startOnReadSocketChannel(channel);
 						return ;
 					}
 					
 					handler.onMessageReceived(channel, message);
 				} else {
-					logger.info("messageId: {} doesn't exist.", header.getId());
+					logger.info("{} - messageId: {} doesn't exist.", moduleName, header.getId());
 				}
 				//start to read next message again
 				startOnReadSocketChannel(channel);
@@ -153,7 +156,7 @@ public class FixmeSocketServerChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, SocketChannel channel) {
-				logger.error("fail to read message from client");
+				logger.error("{} - fail to read message from client", moduleName);
 			}
 
 		});
@@ -175,7 +178,7 @@ public class FixmeSocketServerChannelManager {
 
 			@Override
 			public void failed(Throwable exc, SocketChannel attachment) {
-				logger.error("fail to write message from client");
+				logger.error("{} - fail to write message from client", moduleName);
 			}
 			
 		});
@@ -189,9 +192,9 @@ public class FixmeSocketServerChannelManager {
 			if (channelListener.isOpen())
 				channelListener.close();
 		} catch (IOException e) {
-			logger.error("fail to close channelListener port :{}", this.port);
+			logger.error("{} - fail to close channelListener port :{}", moduleName, this.port);
 			return ;
 		}
-		logger.info("ChannelListener port {} stopped", this.port);
+		logger.info("{} - ChannelListener port {} stopped", moduleName, this.port);
 	}
 }

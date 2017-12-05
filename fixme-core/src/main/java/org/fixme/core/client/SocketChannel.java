@@ -1,5 +1,6 @@
 package org.fixme.core.client;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -42,6 +43,18 @@ public class SocketChannel {
 	
 	public boolean isOpen() {
 		return this.channel.isOpen();
+	}
+	
+	public String getRemoteAddress() {
+		String remoteAddress = null;
+		
+		try {
+			remoteAddress = channel.getRemoteAddress().toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return remoteAddress;
 	}
 	
 	/**

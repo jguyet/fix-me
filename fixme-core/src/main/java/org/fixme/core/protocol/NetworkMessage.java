@@ -10,11 +10,19 @@ public abstract class NetworkMessage {
 		this.buffer = buffer;
 	}
 	
+	public NetworkMessage() {
+		
+	}
+	
 	public abstract int messageId();
+	
+	public abstract String getName();
 	
 	public abstract ByteBuffer serialize();
 	
 	public abstract void deserialize();
+	
+	public abstract String toString();
 	
 	public ByteBuffer array() {
 		
@@ -23,7 +31,9 @@ public abstract class NetworkMessage {
 		if (content == null)
 			content = ByteBuffer.allocate(0);
 		
-		int length = content.capacity();
+		int length = content.position();
+		//set limit
+		content.limit(length);
 		
 		NetworkMessageHeader header = new NetworkMessageHeader(this.messageId(), length);
 		ByteBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
@@ -37,6 +47,7 @@ public abstract class NetworkMessage {
 		serializedMessage.put(content);
 		
 		serializedMessage.flip();
+		
 		return serializedMessage;
 	}
 }
