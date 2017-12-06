@@ -4,6 +4,7 @@ import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.message.AttributeUniqueIdentifiantMessage;
+import org.fixme.router.RouterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,17 +26,17 @@ public class BrokerServerHandler implements IASynchronousSocketChannelHandler {
 	@Override
 	public void onStartConnection(SocketChannel ch) {
 		ch.write(new AttributeUniqueIdentifiantMessage(ch.getUid()));
-		logger.info("Router - Accepte connection from Broker from {}", ch.getRemoteAddress());
+		logger.info("{} - Broker: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		logger.info("Router - Broker: BROKERID={}|MSGTYPE={}|MSGCONTENT={}", ch.getUid(), message.getName(), message.toString());
+		logger.info("{} - Broker: BROKERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum());
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
-		logger.info("Router - Disconnection Broker from {}", ch.getRemoteAddress());
+		logger.info("{} - Broker: Disconnection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 	
 }

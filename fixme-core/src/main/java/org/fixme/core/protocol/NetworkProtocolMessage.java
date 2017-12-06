@@ -18,18 +18,18 @@ public class NetworkProtocolMessage {
 	 * @param buffer
 	 * @return
 	 */
-	public static NetworkMessageHeader readHeader(ByteBuffer buffer) {
+	public static NetworkMessageHeader readHeader(ByteArrayBuffer buffer) {
 		
 		NetworkMessageHeader header = null;
 		
-		if (buffer.capacity() < STATIC_HEADER_LEN)
+		if (buffer.getSize() < STATIC_HEADER_LEN)
 			return null;
 		//4 first byte = messageId
 		//|0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000|
-		int messageId =	buffer.getInt();
+		int messageId =	buffer.readInt();
 		//4 second byte = message length
 		//|0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000|
-		int len =		buffer.getInt();
+		int len =		buffer.readInt();
 		
 		header = new NetworkMessageHeader(messageId, len);
 		return (header);
@@ -44,8 +44,8 @@ public class NetworkProtocolMessage {
 	 * @param header
 	 * @return
 	 */
-	public static ByteBuffer writeHeader(NetworkMessageHeader header) {
-		ByteBuffer buffer = ByteBuffer.allocate(8);
+	public static ByteArrayBuffer writeHeader(NetworkMessageHeader header) {
+		ByteArrayBuffer buffer = new ByteArrayBuffer();
 		
 		//4 first byte = messageId
 		//|0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000|

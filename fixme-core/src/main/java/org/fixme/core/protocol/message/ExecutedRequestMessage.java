@@ -1,14 +1,13 @@
 package org.fixme.core.protocol.message;
 
-import java.nio.ByteBuffer;
-
+import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 
 public class ExecutedRequestMessage extends NetworkMessage {
 
 	public static final int MESSAGE_ID = 1004;
 	
-	public ExecutedRequestMessage(ByteBuffer buffer) {
+	public ExecutedRequestMessage(ByteArrayBuffer buffer) {
 		super(buffer);
 	}
 	
@@ -27,14 +26,12 @@ public class ExecutedRequestMessage extends NetworkMessage {
 	}
 
 	@Override
-	public ByteBuffer serialize() {
-		// TODO Auto-generated method stub
-		return null;
+	public void serialize(ByteArrayBuffer buffer) {
+		
 	}
 
 	@Override
-	public void deserialize() {
-		// TODO Auto-generated method stub
+	public void deserialize(ByteArrayBuffer buffer) {
 		
 	}
 

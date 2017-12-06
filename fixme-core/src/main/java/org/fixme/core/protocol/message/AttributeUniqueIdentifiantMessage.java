@@ -1,10 +1,9 @@
 package org.fixme.core.protocol.message;
 
-import java.nio.ByteBuffer;
-
 import javax.validation.constraints.Min;
 
 import org.fixme.core.protocol.AnnotationMessageID;
+import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 
 @AnnotationMessageID(AttributeUniqueIdentifiantMessage.MESSAGE_ID)
@@ -25,26 +24,22 @@ public class AttributeUniqueIdentifiantMessage extends NetworkMessage {
 		return "AttributeUniqueIdentifiantMessage";
 	}
 	
-	public AttributeUniqueIdentifiantMessage(int id) {
-		super(null);
-		this.id = id;
-	}
-	
-	public AttributeUniqueIdentifiantMessage(ByteBuffer buffer) {
+	public AttributeUniqueIdentifiantMessage(ByteArrayBuffer buffer) {
 		super(buffer);
 	}
 	
+	public AttributeUniqueIdentifiantMessage(int id) {
+		this.id = id;
+	}
+	
 	@Override
-	public ByteBuffer serialize() {
-		ByteBuffer buffer = ByteBuffer.allocate(4);
-		
+	public void serialize(ByteArrayBuffer buffer) {
 		buffer.putInt(this.id);
-		return buffer;
 	}
 
 	@Override
-	public void deserialize() {
-		this.id = this.buffer.getInt();
+	public void deserialize(ByteArrayBuffer buffer) {
+		this.id = buffer.readInt();
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import org.fixme.core.protocol.NetworkMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SocketBroker implements IASynchronousSocketChannelHandler{
+public class SocketBroker implements IASynchronousSocketChannelHandler {
 
 	/**
 	 * LOGGER
@@ -32,7 +32,7 @@ public class SocketBroker implements IASynchronousSocketChannelHandler{
 	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		logger.info("Broker - Connection estabilised on {}:{}", ip, port);
+		logger.info("{} - Router: Connection estabilised on {}:{}", BrokerProperties.MODULE_NAME, ip, port);
 		this.channel.startOnReadSocketChannel();
 	}
 
@@ -40,14 +40,14 @@ public class SocketBroker implements IASynchronousSocketChannelHandler{
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = SocketBrokerHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("Broker - Message {} HANDLED={}", message.getName(), handled);
+		logger.info("{} - Router: ROUTERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}|HANDLED={}", BrokerProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
 		App.stopped = true;
 		if (ch.isOpen() != false)
-			logger.info("Broker - Connection closed from {}", ch.getRemoteAddress());
+			logger.info("{} - Router: Connection closed from {}", BrokerProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
 }

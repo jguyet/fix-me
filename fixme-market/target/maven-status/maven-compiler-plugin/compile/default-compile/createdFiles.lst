@@ -1,1 +1,8 @@
+org/fixme/market/socket/reflection/MarketMethodMessageHandler.class
+org/fixme/market/socket/handler/StartConnectionHandler.class
+org/fixme/market/socket/SocketMarket.class
+org/fixme/market/App$1.class
+org/fixme/market/MarketProperties.class
 org/fixme/market/App.class
+org/fixme/market/socket/reflection/MarketClassMessageHandler.class
+org/fixme/market/socket/SocketMarketHandlerFactory.class

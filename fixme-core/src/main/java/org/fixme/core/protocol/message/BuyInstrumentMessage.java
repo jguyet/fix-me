@@ -3,9 +3,11 @@ package org.fixme.core.protocol.message;
 import java.nio.ByteBuffer;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.fixme.core.ByteBufferUtils;
 import org.fixme.core.protocol.AnnotationMessageID;
+import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 
 @AnnotationMessageID(BuyInstrumentMessage.MESSAGE_ID)
@@ -18,15 +20,13 @@ public class BuyInstrumentMessage extends NetworkMessage {
 	
 	public String		instrument;
 	
-	@Min(value=1)
 	public int			quantity;
 	
 	public String		market;
 	
-	@Min(value=1)
 	public int			price;
 	
-	public BuyInstrumentMessage(ByteBuffer buffer) {
+	public BuyInstrumentMessage(ByteArrayBuffer buffer) {
 		super(buffer);
 	}
 	
@@ -49,29 +49,35 @@ public class BuyInstrumentMessage extends NetworkMessage {
 	}
 
 	@Override
-	public ByteBuffer serialize() {
-		ByteBuffer buffer = ByteBuffer.allocate(2048);
+	public void serialize(ByteArrayBuffer buffer) {
 		
 		buffer.putInt(this.buyerUniqueId);
-		ByteBufferUtils.putString(buffer, this.instrument);
+		buffer.putString(this.instrument);
 		buffer.putInt(this.quantity);
-		ByteBufferUtils.putString(buffer, this.market);
+		buffer.putString(this.market);
 		buffer.putInt(this.price);
-		return buffer;
 	}
 
 	@Override
-	public void deserialize() {
-		this.buyerUniqueId = this.buffer.getInt();
-		this.instrument = ByteBufferUtils.getString(this.buffer);
-		this.quantity = this.buffer.getInt();
-		this.market = ByteBufferUtils.getString(this.buffer);
-		this.price = this.buffer.getInt();
+	public void deserialize(ByteArrayBuffer buffer) {
+		this.buyerUniqueId = buffer.readInt();
+		this.instrument = buffer.readString();
+		this.quantity = buffer.readInt();
+		this.market = buffer.readString();
+		this.price = buffer.readInt();
 	}
 
 	@Override
 	public String toString() {
-		return "SESSIONID=" + this.buyerUniqueId + "|INSTRUMENT=" + this.instrument + "|QUANTITY=" + this.quantity + "|MARKET=" + this.market + "|PRICE=" + this.price;
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SESSIONID=").append(this.buyerUniqueId).append("|");
+		str.append("INSTRUMENT=").append(this.instrument).append("|");
+		str.append("QUANTITY=").append(this.quantity).append("|");
+		str.append("MARKET=").append(this.market).append("|");
+		str.append("PRICE=").append(this.price);
+		
+		return str.toString();
 	}
 
 }

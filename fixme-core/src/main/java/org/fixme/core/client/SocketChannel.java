@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 
+import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +65,8 @@ public class SocketChannel {
 	 */
 	public void write(NetworkMessage message) {
 		
+		message.serialize_message();
+		
 		ByteBuffer buffer = message.array();
 		
 		this.channel.write(buffer, this, new CompletionHandler<Integer, SocketChannel> () {
@@ -83,5 +86,5 @@ public class SocketChannel {
 	
 	//RESERVED
 	
-	public ByteBuffer splittedMessage = ByteBuffer.allocate(0);
+	public ByteArrayBuffer splittedMessage = new ByteArrayBuffer(0);
 }

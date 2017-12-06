@@ -7,6 +7,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 
 import org.fixme.core.client.SocketChannel;
+import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.NetworkMessageFactory;
 import org.fixme.core.protocol.NetworkMessageHeader;
@@ -82,21 +83,19 @@ public class FixmeSocketChannelManager {
 					handler.onConnectionClosed(channel);
 					return ;
 				}
-				
-				int totalLength = result + channel.splittedMessage.capacity();
-				ByteBuffer finalbuffer = ByteBuffer.allocate(totalLength);
+				ByteArrayBuffer finalbuffer = new ByteArrayBuffer();
 					
 				finalbuffer.put(channel.splittedMessage);
 				finalbuffer.put(buffer.array(), 0, result);
+				
 				finalbuffer.flip();
 				
-				channel.splittedMessage = ByteBuffer.allocate(0);
+				channel.splittedMessage = new ByteArrayBuffer();
 				buffer.clear();
 				
 				NetworkMessageHeader header = NetworkProtocolMessage.readHeader(finalbuffer);
 				
 				if (header == null) {
-					finalbuffer.flip();
 					channel.splittedMessage = finalbuffer;
 					//start to read next message again
 					startOnReadSocketChannel();
@@ -115,7 +114,7 @@ public class FixmeSocketChannelManager {
 				
 				if (message != null) {
 					
-					message.deserialize();
+					message.deserialize_message();
 					
 					if (Validator.validateObject(message) == false) {
 						logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());

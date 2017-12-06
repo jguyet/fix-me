@@ -27,8 +27,6 @@ public class StartConnectionHandler {
 	public static boolean attributeUniqueIdentifianMessageHandler(SocketChannel ch, AttributeUniqueIdentifiantMessage message) {
 		ch.setUid(message.id);
 		
-		logger.info("Broker - Router - attributeUniqueIdentifianMessageHandler {}", message.id);
-		
 		BuyInstrumentMessage buymessage = new BuyInstrumentMessage(ch.getUid(), "VIOLON", 1, "MSE", 500);
 		ch.write(buymessage);
 		return true;

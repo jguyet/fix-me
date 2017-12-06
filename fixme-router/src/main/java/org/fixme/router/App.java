@@ -1,6 +1,7 @@
 package org.fixme.router;
 
 import org.fixme.core.FixmeSocketServerChannelManager;
+import org.fixme.core.LoggingProperties;
 import org.fixme.router.servers.BrokerServerHandler;
 import org.fixme.router.servers.MarketServerHandler;
 
@@ -30,6 +31,8 @@ public class App
     public static void main( String[] args )
     {
     	catchSigTerm();
+    	
+    	LoggingProperties.load();
     	
     	//################################################################################################
     	//BUILD HANDLERS

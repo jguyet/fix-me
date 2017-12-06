@@ -3,6 +3,8 @@ package org.fixme.router.servers;
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.protocol.message.AttributeUniqueIdentifiantMessage;
+import org.fixme.router.RouterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,17 +25,17 @@ public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		
-		logger.info("new market id({})", ch.getUid());
+		ch.write(new AttributeUniqueIdentifiantMessage(ch.getUid()));
+		logger.info("{} - Market: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		logger.info("new message on market id({}) messageId {}", ch.getUid(), message.messageId());
+		logger.info("{} - Market: MARKETID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum());
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
-		logger.info("Connection market closed id({})", ch.getUid());
+		logger.info("{} - Market: Disconnection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 }

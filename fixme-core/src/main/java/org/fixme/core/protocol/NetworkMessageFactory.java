@@ -2,7 +2,6 @@ package org.fixme.core.protocol;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class NetworkMessageFactory {
 		}
 	}
 	
-	public static NetworkMessage createNetworkMessage(NetworkMessageHeader header, ByteBuffer buffer) {
+	public static NetworkMessage createNetworkMessage(NetworkMessageHeader header, ByteArrayBuffer buffer) {
 		
 		NetworkMessage result = null;
     	
@@ -50,6 +49,8 @@ public class NetworkMessageFactory {
 				for (Constructor<?> c : contructors)
 				{
 					if (c.getGenericParameterTypes().length != 1)
+						continue ;
+					if (!c.getParameters()[0].getType().getName().equalsIgnoreCase(ByteArrayBuffer.class.getName()))
 						continue ;
 					c.setAccessible(true);
 					result = (NetworkMessage)c.newInstance(buffer);

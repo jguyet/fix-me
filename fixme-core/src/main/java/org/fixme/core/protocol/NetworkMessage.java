@@ -2,52 +2,60 @@ package org.fixme.core.protocol;
 
 import java.nio.ByteBuffer;
 
+import org.fixme.core.protocol.utils.CheckSum;
+
 public abstract class NetworkMessage {
 	
-	protected ByteBuffer buffer;
+	private ByteArrayBuffer	buffer;
+	private String			checkSum;
 	
-	public NetworkMessage(ByteBuffer buffer) {
+	public NetworkMessage(ByteArrayBuffer buffer) {
 		this.buffer = buffer;
 	}
 	
 	public NetworkMessage() {
+		this.buffer = new ByteArrayBuffer();
+	}
+	
+	public String getCheckSum() {
+		return this.checkSum;
+	}
+	
+	public void serialize_message() {
+		serialize(this.buffer);
 		
+		//WRITE CHECKSUM
+		this.buffer.putString(CheckSum.get(this.buffer.array()));
+	}
+	
+	public void deserialize_message() {
+		deserialize(this.buffer);
+		
+		//READ CHECKSUM
+		this.checkSum = this.buffer.readString();
+	}
+	
+	public ByteBuffer array() {
+		
+		ByteArrayBuffer serializedMessage =  new ByteArrayBuffer();
+		
+		NetworkMessageHeader header = new NetworkMessageHeader(this.messageId(), this.buffer.getSize());
+		ByteArrayBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
+		
+		serializedMessage.put(serializedHeader);
+		serializedMessage.put(this.buffer);
+		
+		serializedMessage.flip();
+		return serializedMessage.getByteBuffer();
 	}
 	
 	public abstract int messageId();
 	
 	public abstract String getName();
 	
-	public abstract ByteBuffer serialize();
+	public abstract void serialize(ByteArrayBuffer buffer);
 	
-	public abstract void deserialize();
+	public abstract void deserialize(ByteArrayBuffer buffer);
 	
 	public abstract String toString();
-	
-	public ByteBuffer array() {
-		
-		ByteBuffer content = serialize();
-		
-		if (content == null)
-			content = ByteBuffer.allocate(0);
-		
-		int length = content.position();
-		//set limit
-		content.limit(length);
-		
-		NetworkMessageHeader header = new NetworkMessageHeader(this.messageId(), length);
-		ByteBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
-		ByteBuffer serializedMessage = ByteBuffer.allocate(NetworkProtocolMessage.STATIC_HEADER_LEN + length);
-		
-		//reset position
-		serializedHeader.flip();
-		content.flip();
-		
-		serializedMessage.put(serializedHeader);
-		serializedMessage.put(content);
-		
-		serializedMessage.flip();
-		
-		return serializedMessage;
-	}
 }
