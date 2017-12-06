@@ -13,7 +13,9 @@ public class LoggingProperties {
 	
 	public static final Level	VALIDATOR_LOGS_LEVEL = Level.OFF;
 	
-	public static final Level	LOGS_LEVEL = Level.ALL;
+	public static final Level	PROJECT_LOGS_LEVEL = Level.ALL;
+	
+	public static final Level	CORE_LOGS_LEVEL = Level.INFO;
 	
 	public static void load() {
 		/**
@@ -40,10 +42,19 @@ public class LoggingProperties {
 		/**
 		 * SET LEVEL LOGS Validator
 		 */
-		log = (Logger) LoggerFactory.getLogger("org.fixme");
-		log.setLevel(LoggingProperties.LOGS_LEVEL);
-		
 		log = (Logger) LoggerFactory.getLogger("org.fixme.core.validation.Validator");
 		log.setLevel(LoggingProperties.VALIDATOR_LOGS_LEVEL);
+		
+		/**
+		 * PROJECT LOG LEVEL
+		 */
+		log = (Logger) LoggerFactory.getLogger("org.fixme");
+		log.setLevel(LoggingProperties.PROJECT_LOGS_LEVEL);
+		
+		/**
+		 * CORE LOG LEVEL
+		 */
+		log = (Logger) LoggerFactory.getLogger("org.fixme.core");
+		log.setLevel(LoggingProperties.CORE_LOGS_LEVEL);
 	}
 }

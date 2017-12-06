@@ -1,6 +1,7 @@
 package org.fixme.core;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
@@ -13,6 +14,7 @@ import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.NetworkMessageFactory;
 import org.fixme.core.protocol.NetworkMessageHeader;
 import org.fixme.core.protocol.NetworkProtocolMessage;
+import org.fixme.core.protocol.utils.CheckSum;
 import org.fixme.core.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +54,12 @@ public class FixmeSocketServerChannelManager {
 	/**
 	 * Method for bind socket server
 	 */
-	public void initialize() {
+	public void initialize() throws BindException {
 		try {
 		channelListener = AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(port));
 		} catch (IOException e) {
-			logger.error("{} - fail bind channelListener on port {}", moduleName, this.port);
-			return ;
+			logger.error("{} - failnn bind channelListener on port {}", moduleName, this.port);
+			throw new BindException(e.getMessage());
 		}
 		logger.info("{} - Connection estabilised on port {}", moduleName, this.port);
 	}
@@ -83,7 +85,8 @@ public class FixmeSocketServerChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, AsynchronousServerSocketChannel serverSock) {
-				logger.error("{} - fail to accept a connection", moduleName);
+				if (channelListener.isOpen())
+					logger.error("{} - fail to accept a connection", moduleName);
 			}
 		
 		});
@@ -102,49 +105,87 @@ public class FixmeSocketServerChannelManager {
 			public void completed(Integer result, SocketChannel channel) {
 				buffer.flip();
 				
+				/**
+				 * IF result == -1 connection are closed
+				 */
 				if (result == -1) {
 					handler.onConnectionClosed(channel);
 					return ;
 				}
+				//build buffer
 				ByteArrayBuffer finalbuffer = new ByteArrayBuffer();
-					
-				finalbuffer.put(channel.splittedMessage);
-				finalbuffer.put(buffer.array(), 0, result);
-				
+				finalbuffer.write(channel.splittedMessage);
+				finalbuffer.write(buffer.array(), 0, result);
 				finalbuffer.flip();
 				
+				//reset split channel var
 				channel.splittedMessage = new ByteArrayBuffer();
-				buffer.clear();
 				
+				if (finalbuffer.size() < NetworkProtocolMessage.STATIC_HEADER_LEN) {
+					channel.splittedMessage = finalbuffer;
+					//start to read next message again
+					startOnReadSocketChannel(socketChannel);
+					return ;
+				}
+				/**
+				 * BUILD HEADER OF MESSAGE
+				 */
 				NetworkMessageHeader header = NetworkProtocolMessage.readHeader(finalbuffer);
 				
 				if (header == null) {
+					//start to read next message again
+					startOnReadSocketChannel(socketChannel);
+					return ;
+				}
+				
+				/**
+				 * CHECK IF HEADER IS VALID
+				 */
+				if (Validator.validateObject(header) == false) {
+					//start to read next message again
+					startOnReadSocketChannel(socketChannel);
+					return ;
+				}
+				
+				/**
+				 * WAIT END OF MESSAGE
+				 */
+				if (finalbuffer.size() - NetworkProtocolMessage.STATIC_HEADER_LEN < header.getLength()) {
 					channel.splittedMessage = finalbuffer;
 					//start to read next message again
 					startOnReadSocketChannel(socketChannel);
 					return ;
 				}
 				
-				if (Validator.validateObject(header) == false) {
-					logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
-					startOnReadSocketChannel(socketChannel);
-					return ;
-				}
-				
-				logger.info("{} messageId: {}, message length: {}", moduleName, header.getId(), header.getLength());
-				
 				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, finalbuffer);
 				
 				if (message != null) {
-					
+					/**
+					 * DESERIALIZE BUFFERED MESSAGE
+					 */
 					message.deserialize_message();
 					
-					if (Validator.validateObject(message) == false) {
-						logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
+					/**
+					 * CHECK CHECKSUM
+					 */
+					if (message.getCheckSum().equalsIgnoreCase(message.buildCheckSum()) == false) {
+						logger.error("fail checkSum is not equals {} != {}", message.getCheckSum(), message.buildCheckSum());
+						//start to read next message again
 						startOnReadSocketChannel(socketChannel);
 						return ;
 					}
 					
+					/**
+					 * CHECK IF MESSAGE IS VALID
+					 */
+					if (Validator.validateObject(message) == false) {
+						//start to read next message again
+						startOnReadSocketChannel(socketChannel);
+						return ;
+					}
+					/**
+					 * CALL HANDLER METHOD OF MESSAGE RECEIVER
+					 */
 					handler.onMessageReceived(channel, message);
 				} else {
 					logger.info("{} - messageId: {} doesn't exist.", moduleName, header.getId());
@@ -155,7 +196,8 @@ public class FixmeSocketServerChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, SocketChannel channel) {
-				logger.error("{} - fail to read message from client", moduleName);
+				if (channel.isOpen())
+					logger.error("{} - fail to read message from client", moduleName);
 			}
 
 		});
@@ -177,7 +219,8 @@ public class FixmeSocketServerChannelManager {
 
 			@Override
 			public void failed(Throwable exc, SocketChannel attachment) {
-				logger.error("{} - fail to write message from client", moduleName);
+				if (attachment.isOpen())
+					logger.error("{} - fail to write message from client", moduleName);
 			}
 			
 		});
@@ -188,7 +231,7 @@ public class FixmeSocketServerChannelManager {
 	 */
 	public void stopSocketServerChannel() {
 		try {
-			if (channelListener.isOpen())
+			if (channelListener != null && channelListener.isOpen())
 				channelListener.close();
 		} catch (IOException e) {
 			logger.error("{} - fail to close channelListener port :{}", moduleName, this.port);

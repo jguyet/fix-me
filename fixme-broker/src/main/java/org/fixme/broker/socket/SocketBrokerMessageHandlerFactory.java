@@ -14,6 +14,10 @@ import org.reflections.Reflections;
 
 public class SocketBrokerMessageHandlerFactory {
 
+	//##############################
+	//@STATICS REFLECTION SECTION ->
+	//##############################
+	
 	public static Map<Integer, Method> messagesHandler = new HashMap<Integer, Method>();
 
 	/**
@@ -44,6 +48,10 @@ public class SocketBrokerMessageHandlerFactory {
 			}
 		}
 	}
+	
+	//##############################################################################
+	//@FACTORY METHODS SECTION ---------------------------------------------------->
+	//##############################################################################
 	
 	/**
 	 * check if messagesHandler contains method with annotation value == message.getTypeId()<br>

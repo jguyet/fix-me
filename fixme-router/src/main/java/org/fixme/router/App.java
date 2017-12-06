@@ -1,5 +1,7 @@
 package org.fixme.router;
 
+import java.net.BindException;
+
 import org.fixme.core.FixmeSocketServerChannelManager;
 import org.fixme.core.LoggingProperties;
 import org.fixme.router.servers.BrokerServerHandler;
@@ -51,8 +53,6 @@ public class App
     	while (stopped == false) {
     		try { Thread.sleep(500); } catch(Exception e) { e.printStackTrace(); }
     	}
-    	//################################################################################################
-    	//STOP SERVERS
     	stopServers();
     }
     
@@ -67,8 +67,13 @@ public class App
     }
     
     private static void initializeServers() {
-    	brokerServer.initialize();
-    	marketServer.initialize();
+    	try {
+    		brokerServer.initialize();
+    		marketServer.initialize();
+    	} catch (BindException e) {
+    		stopServers();
+    		System.exit(0);
+    	}
     }
     
     private static void runServers() {
@@ -85,8 +90,12 @@ public class App
     	Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
                 public void run() {
-            		App.stopped = true;
-                    System.out.println("Inside Add Shutdown Hook");
+            		if (App.stopped)
+            			return ;
+                    System.out.println("Shutdown hook system exit");
+                    if (brokerServer != null && marketServer != null) {
+                    	stopServers();
+                    }
                 }   
             }); 
     }

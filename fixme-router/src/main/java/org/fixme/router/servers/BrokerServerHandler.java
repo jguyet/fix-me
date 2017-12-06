@@ -25,13 +25,18 @@ public class BrokerServerHandler implements IASynchronousSocketChannelHandler {
 	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		ch.write(new AttributeUniqueIdentifiantMessage(ch.getUid()));
+		
+		AttributeUniqueIdentifiantMessage message = new AttributeUniqueIdentifiantMessage(ch.getUid());
+		ch.write(message);
+		
 		logger.info("{} - Broker: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		logger.info("{} - Broker: BROKERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum());
+		boolean handled = BrokerSocketServerMessageHandlerFactory.handleMessage(ch, message);
+		
+		logger.info("{} - Broker: New message BROKERID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

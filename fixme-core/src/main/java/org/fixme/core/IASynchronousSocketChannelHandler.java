@@ -3,6 +3,10 @@ package org.fixme.core;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
 
+/**
+ * @author jguyet
+ * @Commented
+ */
 public interface IASynchronousSocketChannelHandler {
 	/**
 	 * call on accept new connection

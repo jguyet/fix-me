@@ -12,23 +12,32 @@ import org.slf4j.LoggerFactory;
 
 public class SocketChannel {
 	
-	/**
-	 * LOGGER
-	 */
-	private static Logger logger = LoggerFactory.getLogger(SocketChannel.class);
+	//##############################
+	//@STATIC VARIABLES SECTION --->
+	//##############################
 	
-	/**
-	 * STATIC VARS
-	 */
-	private static int CHANNEL_DIGIT_UID = 1;
+	private static Logger				logger = LoggerFactory.getLogger(SocketChannel.class);
+	private static int					CHANNEL_DIGIT_UID = 1;
+	
+	//##############################
+	//@PRIVATE VARIABLES SECTION -->
+	//##############################
 	
 	private int							uid;
 	private AsynchronousSocketChannel	channel;
+	
+	//##############################################################################
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
+	//##############################################################################
 	
 	public SocketChannel(AsynchronousSocketChannel ch) {
 		this.channel = ch;
 		this.uid = SocketChannel.CHANNEL_DIGIT_UID++;
 	}
+	
+	//##############################################################################
+	//@GETTER SETTER SECTION ------------------------------------------------------>
+	//##############################################################################
 
 	public int getUid() {
 		return uid;
@@ -41,6 +50,10 @@ public class SocketChannel {
 	public AsynchronousSocketChannel getChannel() {
 		return channel;
 	}
+	
+	//##############################################################################
+	//@METHODS SECTION ------------------------------------------------------------>
+	//##############################################################################
 	
 	public boolean isOpen() {
 		return this.channel.isOpen();
@@ -65,10 +78,22 @@ public class SocketChannel {
 	 */
 	public void write(NetworkMessage message) {
 		
+		/**
+		 * SET MIND ID ON HEADER PROTOCOL MESSAGE
+		 */
+		message.setmindId(this.uid);
+		/**
+		 * SERIALIZE MESSAGE
+		 */
 		message.serialize_message();
-		
+		/**
+		 * GET BYTEBUFFER OF MESSAGE
+		 */
 		ByteBuffer buffer = message.array();
 		
+		/**
+		 * SEND TO DEST
+		 */
 		this.channel.write(buffer, this, new CompletionHandler<Integer, SocketChannel> () {
 
 			@Override
@@ -84,7 +109,9 @@ public class SocketChannel {
 		});
 	}
 	
-	//RESERVED
+	//##############################################################################
+	//@RESERVED SECTION ----------------------------------------------------------->
+	//##############################################################################
 	
-	public ByteArrayBuffer splittedMessage = new ByteArrayBuffer(0);
+	public ByteArrayBuffer splittedMessage = new ByteArrayBuffer();
 }

@@ -31,7 +31,9 @@ public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		logger.info("{} - Market: MARKETID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum());
+		boolean handled = MarketSocketServerMessageHandlerFactory.handleMessage(ch, message);
+		
+		logger.info("{} - Market: New message MARKETID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

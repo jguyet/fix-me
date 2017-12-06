@@ -4,17 +4,21 @@ import org.fixme.core.LoggingProperties;
 import org.fixme.market.socket.SocketMarket;
 
 /**
- * Hello world!
- *
+ * Market App
+ * @author jguyet
  */
 public class App 
 {
-	private static SocketMarket socket;
+	//##############################
+	//@STATICS SECTION ------------>
+	//##############################
 	
-	/**
-	 * STATIC VARS
-	 */
-	public static boolean stopped = false;
+	public static SocketMarket		socket;
+	public static boolean			stopped = false;
+	
+	//##############################
+	//@MAIN SECTION --------------->
+	//##############################
 	
     public static void main( String[] args )
     {
@@ -26,19 +30,30 @@ public class App
     	
     	socket.intialize();
     	
-    	//################################################################################################
+    	//################
     	//WAIT STOPPED SIG
     	while (stopped == false) {
     		try { Thread.sleep(500); } catch(Exception e) { e.printStackTrace(); }
     	}
+    	
+    	socket.stop();
     }
+
+	//##############################
+	//@SIGNAL SECTION ------------->
+	//##############################
     
     private static void catchSigTerm() {
     	Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
                 public void run() {
-            		App.stopped = true;
+            		if (App.stopped)
+            			return ;
+            		System.out.println("Shutdown hook system exit");
+        			if (socket != null) {
+        				socket.stop();
+        			}
                 }   
-            }); 
+            });
     }
 }

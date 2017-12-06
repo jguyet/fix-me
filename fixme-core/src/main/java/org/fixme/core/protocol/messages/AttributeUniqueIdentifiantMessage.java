@@ -34,7 +34,7 @@ public class AttributeUniqueIdentifiantMessage extends NetworkMessage {
 	
 	@Override
 	public void serialize(ByteArrayBuffer buffer) {
-		buffer.putInt(this.id);
+		buffer.writeInt(this.id);
 	}
 
 	@Override

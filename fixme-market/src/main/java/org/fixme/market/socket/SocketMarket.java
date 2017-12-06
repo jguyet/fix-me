@@ -10,14 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SocketMarket implements IASynchronousSocketChannelHandler {
-	/**
-	 * LOGGER
-	 */
+	
+	//##############################
+	//@STATICS VARIABLES SECTION -->
+	//##############################
+	
 	private static Logger				logger = LoggerFactory.getLogger(SocketMarket.class);
+	
+	//##############################
+	//@PRIVATE VARIABLES SECTION -->
+	//##############################
 	
 	private String						ip;
 	private int							port;
 	private FixmeSocketChannelManager	channel;
+	
+	//##############################################################################
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
+	//##############################################################################
 	
 	public SocketMarket(String ip, int port) {
 		this.ip = ip;
@@ -29,6 +39,14 @@ public class SocketMarket implements IASynchronousSocketChannelHandler {
 		this.channel.initialize();
 	}
 	
+	public void stop() {
+		this.channel.stop();
+	}
+	
+	//##############################################################################
+	//@HANDLER SECTION ------------------------------------------------------------>
+	//##############################################################################
+	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
 		logger.info("{} - Router: Connection estabilised on {}:{}", MarketProperties.MODULE_NAME, ip, port);
@@ -39,7 +57,7 @@ public class SocketMarket implements IASynchronousSocketChannelHandler {
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = SocketMarketMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Router: ROUTERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}|HANDLED={}", MarketProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Router: New message ROUTERID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", MarketProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

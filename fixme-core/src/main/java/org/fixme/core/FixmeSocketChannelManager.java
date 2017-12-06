@@ -55,13 +55,13 @@ public class FixmeSocketChannelManager {
 
 				@Override
 				public void failed(Throwable exc, SocketChannel attachment) {
-					logger.error("{} - fail bind SocketChannel on port {}:{}", moduleName, ip, port);
+					logger.error("{} - fail bind SocketChannel on {}:{}", moduleName, ip, port);
 					handler.onConnectionClosed(channel);
 				}
 			});
 			
 		} catch (IOException e) {
-			logger.error("{} - fail bind SocketChannel on port {}:{}", moduleName, this.ip, this.port);
+			logger.error("{} - fail bind SocketChannel on {}:{}", moduleName, this.ip, this.port);
 			return ;
 		}
 	}
@@ -79,49 +79,87 @@ public class FixmeSocketChannelManager {
 			public void completed(Integer result, SocketChannel channel) {
 				buffer.flip();
 				
+				/**
+				 * IF result == -1 connection are closed
+				 */
 				if (result == -1) {
 					handler.onConnectionClosed(channel);
 					return ;
 				}
+				//build buffer
 				ByteArrayBuffer finalbuffer = new ByteArrayBuffer();
-					
-				finalbuffer.put(channel.splittedMessage);
-				finalbuffer.put(buffer.array(), 0, result);
-				
+				finalbuffer.write(channel.splittedMessage);
+				finalbuffer.write(buffer.array(), 0, result);
 				finalbuffer.flip();
 				
+				//reset split channel var
 				channel.splittedMessage = new ByteArrayBuffer();
-				buffer.clear();
 				
+				if (finalbuffer.size() < NetworkProtocolMessage.STATIC_HEADER_LEN) {
+					channel.splittedMessage = finalbuffer;
+					//start to read next message again
+					startOnReadSocketChannel();
+					return ;
+				}
+				/**
+				 * BUILD HEADER OF MESSAGE
+				 */
 				NetworkMessageHeader header = NetworkProtocolMessage.readHeader(finalbuffer);
 				
 				if (header == null) {
+					//start to read next message again
+					startOnReadSocketChannel();
+					return ;
+				}
+				
+				/**
+				 * CHECK IF HEADER IS VALID
+				 */
+				if (Validator.validateObject(header) == false) {
+					//start to read next message again
+					startOnReadSocketChannel();
+					return ;
+				}
+				
+				/**
+				 * WAIT END OF MESSAGE
+				 */
+				if (finalbuffer.size() - NetworkProtocolMessage.STATIC_HEADER_LEN < header.getLength()) {
 					channel.splittedMessage = finalbuffer;
 					//start to read next message again
 					startOnReadSocketChannel();
 					return ;
 				}
 				
-				if (Validator.validateObject(header) == false) {
-					logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
-					startOnReadSocketChannel();
-					return ;
-				}
-				
-				logger.info("{} messageId: {}, message length: {}", moduleName, header.getId(), header.getLength());
-				
 				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, finalbuffer);
 				
 				if (message != null) {
-					
+					/**
+					 * DESERIALIZE BUFFERED MESSAGE
+					 */
 					message.deserialize_message();
 					
-					if (Validator.validateObject(message) == false) {
-						logger.info("{} - messageId: {} beans not valide.", moduleName, header.getId());
+					/**
+					 * CHECK CHECKSUM
+					 */
+					if (message.getCheckSum().equalsIgnoreCase(message.buildCheckSum()) == false) {
+						logger.error("fail checkSum is not equals {} != {}", message.getCheckSum(), message.buildCheckSum());
+						//start to read next message again
 						startOnReadSocketChannel();
 						return ;
 					}
 					
+					/**
+					 * CHECK IF MESSAGE IS VALID
+					 */
+					if (Validator.validateObject(message) == false) {
+						//start to read next message again
+						startOnReadSocketChannel();
+						return ;
+					}
+					/**
+					 * CALL HANDLER METHOD OF MESSAGE RECEIVER
+					 */
 					handler.onMessageReceived(channel, message);
 				} else {
 					logger.info("{} - messageId: {} doesn't exist.", moduleName, header.getId());
@@ -132,7 +170,8 @@ public class FixmeSocketChannelManager {
 			
 			@Override
 			public void failed(Throwable exc, SocketChannel channel) {
-				logger.error("{} - fail to read message from client", moduleName);
+				if (channel.isOpen())
+					logger.error("{} - fail to read message from client", moduleName);
 			}
 
 		});
@@ -154,10 +193,22 @@ public class FixmeSocketChannelManager {
 
 			@Override
 			public void failed(Throwable exc, SocketChannel attachment) {
-				logger.error("fail to write message from client");
+				if (attachment.isOpen())
+					logger.error("fail to write message from client");
 			}
 			
 		});
+	}
+	
+	public void stop() {
+		try {
+			if (this.channel != null && this.channel.getChannel().isOpen())
+				this.channel.getChannel().close();
+		} catch (IOException e) {
+			logger.error("{} - fail to close SocketChannel on {}:{}", moduleName, ip, port);
+			return ;
+		}
+		logger.info("{} - SocketChannel port {}:{} stopped", moduleName, ip, port);
 	}
 	
 }

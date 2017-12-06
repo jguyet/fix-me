@@ -10,14 +10,18 @@ import org.reflections.Reflections;
 
 public class NetworkMessageFactory {
 
+	//##############################
+	//@STATICS REFLECTION SECTION ->
+	//##############################
+	
 	public static Map<Integer, Class<?>> messages = new HashMap<Integer, Class<?>>();
-
+	
 	/**
 	 * load all class child of NetworkMessage on org.fixme.core.protocol.message with AnnotationMessageID anotation
 	 */
 	static//once loading
 	{
-		Reflections reflections = new Reflections("org.fixme.core.protocol.message");
+		Reflections reflections = new Reflections("org.fixme.core.protocol.messages");
 
 		Set<Class<? extends NetworkMessage>> allClasses = reflections.getSubTypesOf(NetworkMessage.class);
 		
@@ -36,15 +40,19 @@ public class NetworkMessageFactory {
 		}
 	}
 	
+	//##############################################################################
+	//@FACTORY METHODS SECTION ---------------------------------------------------->
+	//##############################################################################
+	
 	public static NetworkMessage createNetworkMessage(NetworkMessageHeader header, ByteArrayBuffer buffer) {
 		
 		NetworkMessage result = null;
     	
     	try
 		{
-			if (messages.containsKey(header.getId()))
+			if (messages.containsKey(header.getMessageId()))
 			{
-				Constructor<?>[] contructors = messages.get(header.getId()).getConstructors();
+				Constructor<?>[] contructors = messages.get(header.getMessageId()).getConstructors();
 				
 				for (Constructor<?> c : contructors)
 				{

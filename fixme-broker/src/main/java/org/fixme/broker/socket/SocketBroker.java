@@ -11,14 +11,23 @@ import org.slf4j.LoggerFactory;
 
 public class SocketBroker implements IASynchronousSocketChannelHandler {
 
-	/**
-	 * LOGGER
-	 */
+	//##############################
+	//@STATICS VARIABLES SECTION -->
+	//##############################
+	
 	private static Logger				logger = LoggerFactory.getLogger(SocketBroker.class);
+	
+	//##############################
+	//@PRIVATE VARIABLES SECTION -->
+	//##############################
 	
 	private String						ip;
 	private int							port;
 	private FixmeSocketChannelManager	channel;
+	
+	//##############################################################################
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
+	//##############################################################################
 	
 	public SocketBroker(String ip, int port) {
 		this.ip = ip;
@@ -30,6 +39,14 @@ public class SocketBroker implements IASynchronousSocketChannelHandler {
 		this.channel.initialize();
 	}
 	
+	public void stop() {
+		this.channel.stop();
+	}
+	
+	//##############################################################################
+	//@HANDLER SECTION ------------------------------------------------------------>
+	//##############################################################################
+	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
 		logger.info("{} - Router: Connection estabilised on {}:{}", BrokerProperties.MODULE_NAME, ip, port);
@@ -40,7 +57,7 @@ public class SocketBroker implements IASynchronousSocketChannelHandler {
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = SocketBrokerMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Router: ROUTERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}|HANDLED={}", BrokerProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Router: New message ROUTERID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", BrokerProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

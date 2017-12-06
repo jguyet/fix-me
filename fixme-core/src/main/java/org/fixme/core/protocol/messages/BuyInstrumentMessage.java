@@ -47,11 +47,11 @@ public class BuyInstrumentMessage extends NetworkMessage {
 	@Override
 	public void serialize(ByteArrayBuffer buffer) {
 		
-		buffer.putInt(this.buyerUniqueId);
-		buffer.putString(this.instrument);
-		buffer.putInt(this.quantity);
-		buffer.putString(this.market);
-		buffer.putInt(this.price);
+		buffer.writeInt(this.buyerUniqueId);
+		buffer.writeString(this.instrument);
+		buffer.writeInt(this.quantity);
+		buffer.writeString(this.market);
+		buffer.writeInt(this.price);
 	}
 
 	@Override
