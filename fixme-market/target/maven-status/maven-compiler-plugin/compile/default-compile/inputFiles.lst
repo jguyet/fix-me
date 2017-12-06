@@ -1,7 +1,5 @@
 /Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/handler/StartConnectionHandler.java
-/Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/SocketMarketHandlerFactory.java
-/Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/reflection/MarketClassMessageHandler.java
+/Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/SocketMarketMessageHandlerFactory.java
 /Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/MarketProperties.java
-/Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/reflection/MarketMethodMessageHandler.java
 /Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/App.java
 /Users/jguyet/git/fix-me/fixme-market/src/main/java/org/fixme/market/socket/SocketMarket.java

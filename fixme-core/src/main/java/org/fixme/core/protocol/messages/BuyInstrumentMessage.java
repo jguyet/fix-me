@@ -1,11 +1,7 @@
-package org.fixme.core.protocol.message;
-
-import java.nio.ByteBuffer;
+package org.fixme.core.protocol.messages;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 
-import org.fixme.core.ByteBufferUtils;
 import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;

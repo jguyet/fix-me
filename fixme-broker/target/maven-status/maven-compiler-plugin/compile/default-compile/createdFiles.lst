@@ -1,8 +1,6 @@
 org/fixme/broker/App$1.class
-org/fixme/broker/socket/SocketBroker.class
-org/fixme/broker/socket/SocketBrokerHandlerFactory.class
 org/fixme/broker/App.class
-org/fixme/broker/socket/reflection/BrokerClassMessageHandler.class
+org/fixme/broker/socket/SocketBrokerMessageHandlerFactory.class
 org/fixme/broker/socket/handler/StartConnectionHandler.class
 org/fixme/broker/BrokerProperties.class
-org/fixme/broker/socket/reflection/BrokerMethodMessageHandler.class
+org/fixme/broker/socket/SocketBroker.class

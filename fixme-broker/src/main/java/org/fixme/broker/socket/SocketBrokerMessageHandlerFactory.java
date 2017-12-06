@@ -1,4 +1,4 @@
-package org.fixme.market.socket;
+package org.fixme.broker.socket;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -8,22 +8,22 @@ import java.util.Set;
 
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.market.socket.reflection.MarketClassMessageHandler;
-import org.fixme.market.socket.reflection.MarketMethodMessageHandler;
+import org.fixme.core.reflection.handler.ClassMessageHandler;
+import org.fixme.core.reflection.handler.MethodMessageHandler;
 import org.reflections.Reflections;
 
-public class SocketMarketHandlerFactory {
+public class SocketBrokerMessageHandlerFactory {
 
 	public static Map<Integer, Method> messagesHandler = new HashMap<Integer, Method>();
 
 	/**
-	 * load all method on directory org.fixme.market.socket.handler with MarketMethodMessageHandler anotation
+	 * load all method on directory org.fixme.broker.socket.handler with MethodMessageHandler anotation
 	 */
 	static//load once
 	{
-		Reflections reflections = new Reflections("org.fixme.market.socket.handler");
+		Reflections reflections = new Reflections("org.fixme.broker.socket.handler");
 
-		Set<Class<?>> allclass = reflections.getTypesAnnotatedWith(MarketClassMessageHandler.class);
+		Set<Class<?>> allclass = reflections.getTypesAnnotatedWith(ClassMessageHandler.class);
 		
 		for (Class<?> c : allclass)
 		{
@@ -37,9 +37,9 @@ public class SocketMarketHandlerFactory {
 					continue ;
 				for (Annotation a : annots)
 				{
-					if (!(a instanceof MarketMethodMessageHandler))
+					if (!(a instanceof MethodMessageHandler))
 						continue ;
-					messagesHandler.put(((MarketMethodMessageHandler)a).value(), m);
+					messagesHandler.put(((MethodMessageHandler)a).value(), m);
 				}
 			}
 		}

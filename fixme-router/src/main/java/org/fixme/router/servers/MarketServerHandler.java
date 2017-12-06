@@ -3,7 +3,7 @@ package org.fixme.router.servers;
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.core.protocol.message.AttributeUniqueIdentifiantMessage;
+import org.fixme.core.protocol.messages.AttributeUniqueIdentifiantMessage;
 import org.fixme.router.RouterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

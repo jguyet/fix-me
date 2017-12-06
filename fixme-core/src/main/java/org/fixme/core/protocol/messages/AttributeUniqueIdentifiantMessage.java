@@ -1,4 +1,4 @@
-package org.fixme.core.protocol.message;
+package org.fixme.core.protocol.messages;
 
 import javax.validation.constraints.Min;
 

@@ -3,7 +3,7 @@ package org.fixme.core;
 import java.nio.ByteBuffer;
 
 import org.fixme.core.protocol.ByteArrayBuffer;
-import org.fixme.core.protocol.message.BuyInstrumentMessage;
+import org.fixme.core.protocol.messages.BuyInstrumentMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

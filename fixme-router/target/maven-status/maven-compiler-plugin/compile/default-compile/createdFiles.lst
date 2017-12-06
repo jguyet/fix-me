@@ -1,5 +1,7 @@
 org/fixme/router/App.class
 org/fixme/router/servers/MarketServerHandler.class
+org/fixme/router/servers/MarketSocketServerMessageHandlerFactory.class
+org/fixme/router/servers/BrokerSocketServerMessageHandlerFactory.class
 org/fixme/router/RouterProperties.class
 org/fixme/router/App$1.class
 org/fixme/router/servers/BrokerServerHandler.class

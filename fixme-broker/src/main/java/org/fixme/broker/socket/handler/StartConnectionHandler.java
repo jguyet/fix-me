@@ -1,14 +1,14 @@
 package org.fixme.broker.socket.handler;
 
-import org.fixme.broker.socket.reflection.BrokerClassMessageHandler;
-import org.fixme.broker.socket.reflection.BrokerMethodMessageHandler;
 import org.fixme.core.client.SocketChannel;
-import org.fixme.core.protocol.message.AttributeUniqueIdentifiantMessage;
-import org.fixme.core.protocol.message.BuyInstrumentMessage;
+import org.fixme.core.protocol.messages.AttributeUniqueIdentifiantMessage;
+import org.fixme.core.protocol.messages.BuyInstrumentMessage;
+import org.fixme.core.reflection.handler.ClassMessageHandler;
+import org.fixme.core.reflection.handler.MethodMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@BrokerClassMessageHandler("StartConnectionHandler")
+@ClassMessageHandler("StartConnectionHandler")
 public class StartConnectionHandler {
 	
 	/**
@@ -23,7 +23,7 @@ public class StartConnectionHandler {
 	 * @param message
 	 * @return boolean
 	 */
-	@BrokerMethodMessageHandler(AttributeUniqueIdentifiantMessage.MESSAGE_ID)
+	@MethodMessageHandler(AttributeUniqueIdentifiantMessage.MESSAGE_ID)
 	public static boolean attributeUniqueIdentifianMessageHandler(SocketChannel ch, AttributeUniqueIdentifiantMessage message) {
 		ch.setUid(message.id);
 		

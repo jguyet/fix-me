@@ -1,9 +1,9 @@
-package org.fixme.market.socket.reflection;
+package org.fixme.core.reflection.handler;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MarketMethodMessageHandler {
-	public int value();
+public @interface ClassMessageHandler {
+	public String value();
 }

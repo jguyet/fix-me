@@ -37,7 +37,7 @@ public class SocketMarket implements IASynchronousSocketChannelHandler {
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		boolean handled = SocketMarketHandlerFactory.handleMessage(ch, message);
+		boolean handled = SocketMarketMessageHandlerFactory.handleMessage(ch, message);
 		
 		logger.info("{} - Router: ROUTERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}|HANDLED={}", MarketProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}

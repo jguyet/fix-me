@@ -1,37 +1,40 @@
-package org.fixme.core.protocol.message;
+package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 
-public class ExecutedRequestMessage extends NetworkMessage {
+public class RejectedRequestMessage extends NetworkMessage{
 
-	public static final int MESSAGE_ID = 1004;
+	public static final int MESSAGE_ID = 1005;
 	
-	public ExecutedRequestMessage(ByteArrayBuffer buffer) {
+	public RejectedRequestMessage(ByteArrayBuffer buffer) {
 		super(buffer);
 	}
 	
-	public ExecutedRequestMessage() {
+	public RejectedRequestMessage() {
 		
 	}
-	
+
 	@Override
 	public int messageId() {
+		// TODO Auto-generated method stub
 		return MESSAGE_ID;
 	}
 
 	@Override
 	public String getName() {
-		return "ExecutedRequestMessage";
+		// TODO Auto-generated method stub
+		return "RejectedRequestMessage";
 	}
 
 	@Override
 	public void serialize(ByteArrayBuffer buffer) {
-		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void deserialize(ByteArrayBuffer buffer) {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -40,5 +43,5 @@ public class ExecutedRequestMessage extends NetworkMessage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 }

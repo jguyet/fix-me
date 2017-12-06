@@ -1,17 +1,17 @@
-package org.fixme.core.protocol.message;
+package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 
-public class SellInstrumentMessage extends NetworkMessage {
+public class ExecutedRequestMessage extends NetworkMessage {
 
-	public static final int MESSAGE_ID = 1003;
+	public static final int MESSAGE_ID = 1004;
 	
-	public SellInstrumentMessage(ByteArrayBuffer buffer) {
+	public ExecutedRequestMessage(ByteArrayBuffer buffer) {
 		super(buffer);
 	}
 	
-	public SellInstrumentMessage() {
+	public ExecutedRequestMessage() {
 		
 	}
 	
@@ -22,17 +22,16 @@ public class SellInstrumentMessage extends NetworkMessage {
 
 	@Override
 	public String getName() {
-		return "SellInstrumentMessage";
+		return "ExecutedRequestMessage";
 	}
 
 	@Override
 	public void serialize(ByteArrayBuffer buffer) {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void deserialize(ByteArrayBuffer buffer) {
-		// TODO Auto-generated method stub
 		
 	}
 

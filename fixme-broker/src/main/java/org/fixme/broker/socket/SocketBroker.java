@@ -38,7 +38,7 @@ public class SocketBroker implements IASynchronousSocketChannelHandler {
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
-		boolean handled = SocketBrokerHandlerFactory.handleMessage(ch, message);
+		boolean handled = SocketBrokerMessageHandlerFactory.handleMessage(ch, message);
 		
 		logger.info("{} - Router: ROUTERID={}|MSGTYPE={}|MSGCONTENT={}|CHECKSUM={}|HANDLED={}", BrokerProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}

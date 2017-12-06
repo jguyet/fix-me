@@ -1,8 +1,8 @@
 package org.fixme.market.socket.handler;
 
-import org.fixme.market.socket.reflection.MarketClassMessageHandler;
+import org.fixme.core.reflection.handler.ClassMessageHandler;
 
-@MarketClassMessageHandler("StartConnectionHandler")
+@ClassMessageHandler("StartConnectionHandler")
 public class StartConnectionHandler {
 
 	//TODO
