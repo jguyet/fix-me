@@ -32,6 +32,21 @@
     	<artifactId>reflections</artifactId>
     	<version>0.9.11</version>
 	</dependency>
+	<dependency>
+	    <groupId>ch.qos.logback</groupId><!-- with org.slf4j -->
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.2.3</version>
+	</dependency>
+	<dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator-annotation-processor</artifactId>
+        <version>4.1.0.Final</version>
+    </dependency>
+	<dependency>
+	    <groupId>javax.validation</groupId>
+	    <artifactId>validation-api</artifactId>
+	    <version>1.1.0.Final</version>
+	</dependency>
   </dependencies>
   </dependencyManagement>
   

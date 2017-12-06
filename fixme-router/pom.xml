@@ -30,7 +30,6 @@
     <dependency>
 	    <groupId>ch.qos.logback</groupId><!-- with org.slf4j -->
 	    <artifactId>logback-classic</artifactId>
-	    <version>1.2.3</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.fixme</groupId>
