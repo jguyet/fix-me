@@ -8,6 +8,10 @@ import ch.qos.logback.classic.Logger;
 public class LoggingProperties {
 
 	public static final Level	HIBERNATE_LOGS_LEVEL = Level.OFF;
+
+	public static final Level	MONGODB_LOGS_LEVEL = Level.OFF;
+	
+	public static final Level	MORPHIA_LOGS_LEVEL = Level.OFF;
 	
 	public static final Level	REFLECTION_LOGS_LEVEL = Level.OFF;
 	
@@ -32,6 +36,12 @@ public class LoggingProperties {
 		
 		log = (Logger) LoggerFactory.getLogger("org.hibernate");
 		log.setLevel(LoggingProperties.HIBERNATE_LOGS_LEVEL);
+		
+		/**
+		 * SET LEVEL LOGS org.mongodb
+		 */
+		log = (Logger) LoggerFactory.getLogger("org.mongodb.driver");
+		log.setLevel(MONGODB_LOGS_LEVEL);
 		
 		/**
 		 * SET LEVEL LOGS org.reflections

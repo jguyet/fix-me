@@ -16,12 +16,11 @@ public class NetworkMessageHeader {
 	
 	private int id;
 	
-	@Max(value=1002)
+	@Max(value=1050)
 	@Min(value=1000)
 	private int messageId;
 	
 	@Min(value=0)
-	@Max(value=2048)
 	private int length;
 	
 	//##############################################################################

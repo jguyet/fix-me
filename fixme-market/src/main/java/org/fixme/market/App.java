@@ -1,6 +1,7 @@
 package org.fixme.market;
 
 import org.fixme.core.LoggingProperties;
+import org.fixme.core.database.Database;
 import org.fixme.market.socket.SocketMarket;
 
 /**
@@ -16,6 +17,8 @@ public class App
 	public static SocketMarket		socket;
 	public static boolean			stopped = false;
 	
+	public static Database			database;
+	
 	//##############################
 	//@MAIN SECTION --------------->
 	//##############################
@@ -26,6 +29,15 @@ public class App
     	
     	LoggingProperties.load();
     	
+    	//DATABASE
+    	database = new Database(MarketProperties.DATABASE_MONGO_DB_HOSTNAME, MarketProperties.DATABASE_MONGO_DB_PORT, MarketProperties.DATABASE_MONGO_DB);
+    	
+    	database.buildCredential(MarketProperties.DATABASE_MONGO_DB_CREDENTIAL_USER_NAME, MarketProperties.DATABASE_MONGO_DB_CREDENTIAL_PASSWORD);
+    	database.buildDatabaseOptions();
+    	database.buildDatabaseConnection();
+    	database.buildCollections();
+    	
+    	//SOCKET
     	socket = new SocketMarket(MarketProperties.SOCKET_SERVER_ROUTER_MARKET_IP_ADDRESS, MarketProperties.SOCKET_SERVER_ROUTER_MARKET_PORT);
     	
     	socket.intialize();
@@ -37,6 +49,7 @@ public class App
     	}
     	
     	socket.stop();
+    	database.closeDatabaseConnection();
     }
 
 	//##############################
@@ -50,9 +63,8 @@ public class App
             		if (App.stopped)
             			return ;
             		System.out.println("Shutdown hook system exit");
-        			if (socket != null) {
-        				socket.stop();
-        			}
+        			socket.stop();
+        			database.closeDatabaseConnection();
                 }   
             });
     }

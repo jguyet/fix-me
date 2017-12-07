@@ -183,6 +183,7 @@ public class FixmeSocketServerChannelManager {
 						startOnReadSocketChannel(socketChannel);
 						return ;
 					}
+					
 					/**
 					 * CALL HANDLER METHOD OF MESSAGE RECEIVER
 					 */

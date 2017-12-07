@@ -3,7 +3,7 @@ package org.fixme.router.servers;
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.core.protocol.messages.AttributeUniqueIdentifiantMessage;
+import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
 import org.fixme.router.RouterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		ch.write(new AttributeUniqueIdentifiantMessage(ch.getUid()));
+		ch.write(new AttributeRouterUniqueIdentifiantMessage(ch.getUid()));
 		logger.info("{} - Market: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
@@ -33,7 +33,7 @@ public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = MarketSocketServerMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Market: New message MARKETID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Market: New message RID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package org.fixme.core;
 
-import java.nio.ByteBuffer;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 
-import org.fixme.core.protocol.ByteArrayBuffer;
-import org.fixme.core.protocol.messages.BuyInstrumentMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +13,12 @@ public class MainTest {
 	
 	public static void main(String ...args) {
 		
-		BuyInstrumentMessage message = new BuyInstrumentMessage(50, "VIOLON", 1, "MSE", 500);
-		
-		message.serialize_message();
-		
-		ByteBuffer array = message.array();
-		
-		ByteArrayBuffer bb = new ByteArrayBuffer(array);
-		
-		bb.setPosition(8);
-		
-		BuyInstrumentMessage nmessage = new BuyInstrumentMessage(bb);
-		
-		nmessage.deserialize_message();
-		
-		logger.info("message: {}, ", nmessage.toString());
+		try {
+			logger.info("InetAddress: {}", new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 5000).toString());
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

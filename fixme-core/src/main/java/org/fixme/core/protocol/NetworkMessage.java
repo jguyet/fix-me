@@ -55,6 +55,12 @@ public abstract class NetworkMessage {
 	//##############################################################################
 	
 	public void serialize_message() {
+		
+		//WRITE HEADER
+		NetworkMessageHeader header = new NetworkMessageHeader(this.mindId, this.messageId(), this.buffer.size());
+		ByteArrayBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
+		this.buffer.write(serializedHeader);
+		
 		serialize(this.buffer);
 		
 		//WRITE CHECKSUM
@@ -74,26 +80,15 @@ public abstract class NetworkMessage {
 	 * @return String
 	 */
 	public String buildCheckSum() {
-		
-		int offset = NetworkProtocolMessage.STATIC_HEADER_LEN;
 		int endoffset = ByteArrayBuffer.BYTE_INT_SIZE + this.checkSum.length();
 		
-		String checksum = CheckSum.get(this.buffer.array(offset, (this.buffer.size() - endoffset) - offset));
+		String checksum = CheckSum.get(this.buffer.array(0, this.buffer.size() - endoffset));
 		return checksum;
 	}
 	
 	public ByteBuffer array() {
-		
-		ByteArrayBuffer serializedMessage =  new ByteArrayBuffer();
-		
-		NetworkMessageHeader header = new NetworkMessageHeader(this.mindId, this.messageId(), this.buffer.size());
-		ByteArrayBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
-		
-		serializedMessage.write(serializedHeader);
-		serializedMessage.write(this.buffer);
-		
-		serializedMessage.flip();
-		return serializedMessage.getByteBuffer();
+		this.buffer.flip();
+		return this.buffer.getByteBuffer();
 	}
 	
 	//##############################################################################

@@ -3,7 +3,7 @@ package org.fixme.router.servers;
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.core.protocol.messages.AttributeUniqueIdentifiantMessage;
+import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
 import org.fixme.router.RouterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +25,17 @@ public class BrokerServerHandler implements IASynchronousSocketChannelHandler {
 	
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		
-		AttributeUniqueIdentifiantMessage message = new AttributeUniqueIdentifiantMessage(ch.getUid());
-		ch.write(message);
+		ch.write(new AttributeRouterUniqueIdentifiantMessage(ch.getUid()));
 		
 		logger.info("{} - Broker: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
+		
 		boolean handled = BrokerSocketServerMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Broker: New message BROKERID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Broker: New message RID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override

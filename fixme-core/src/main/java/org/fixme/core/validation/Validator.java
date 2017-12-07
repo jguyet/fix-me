@@ -13,6 +13,11 @@ import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Static Validator of Object
+ * @author jguyet
+ * @Commented
+ */
 public class Validator {
 
 	private static ProviderSpecificBootstrap<HibernateValidatorConfiguration> psb = Validation.byProvider(HibernateValidator.class);

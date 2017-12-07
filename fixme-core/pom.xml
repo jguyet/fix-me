@@ -12,7 +12,6 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>fixme-core</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>fixme-core</name>
   <url>http://maven.apache.org</url>
 <!-- ########################################################################## -->
@@ -43,6 +42,16 @@
 	<dependency>
 	    <groupId>javax.validation</groupId>
 	    <artifactId>validation-api</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>org.mongodb</groupId>
+	    <artifactId>mongo-java-driver</artifactId>
+	    <version>3.6.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.google.code.morphia</groupId>
+	    <artifactId>morphia</artifactId>
+	    <version>0.104</version>
 	</dependency>
   </dependencies>
   <!-- END LIBRARIES DEPENDENCIES -->

@@ -64,7 +64,7 @@ public class SocketMarketMessageHandlerFactory {
 
     	try
     	{   
-	        if (messagesHandler.containsKey(message.messageId()))
+    		if (messagesHandler.containsKey(message.messageId()))
 	        {
 	        	Method m = messagesHandler.get(message.messageId());
 	        	

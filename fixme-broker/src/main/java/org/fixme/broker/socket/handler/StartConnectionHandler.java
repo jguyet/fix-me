@@ -1,8 +1,8 @@
 package org.fixme.broker.socket.handler;
 
 import org.fixme.core.client.SocketChannel;
-import org.fixme.core.protocol.messages.AttributeUniqueIdentifiantMessage;
-import org.fixme.core.protocol.messages.BuyInstrumentMessage;
+import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
+import org.fixme.core.protocol.messages.MarketDataRequestMessage;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
 import org.fixme.core.reflection.handler.MethodMessageHandler;
 import org.slf4j.Logger;
@@ -17,18 +17,20 @@ public class StartConnectionHandler {
 	private static Logger logger = LoggerFactory.getLogger(StartConnectionHandler.class);
 
 	/**
-	 * attributeUniqueIdentifianMessageHandler(SocketChannel ch, AttributeUniqueIdentifiantMessage message)<br>
-	 * Method handle AttributeUniqueIdentifiantMessage
+	 * attributeRouterUniqueIdentifiantMessageHandler(SocketChannel ch, AttributeRouterUniqueIdentifiantMessage message)<br>
+	 * Method handle AttributeRouterUniqueIdentifiantMessage
 	 * @param ch
 	 * @param message
 	 * @return boolean
 	 */
-	@MethodMessageHandler(AttributeUniqueIdentifiantMessage.MESSAGE_ID)
-	public static boolean attributeUniqueIdentifianMessageHandler(SocketChannel ch, AttributeUniqueIdentifiantMessage message) {
+	@MethodMessageHandler(AttributeRouterUniqueIdentifiantMessage.MESSAGE_ID)
+	public static boolean attributeRouterUniqueIdentifiantMessageHandler(SocketChannel ch, AttributeRouterUniqueIdentifiantMessage message) {
 		ch.setUid(message.id);
 		
-		BuyInstrumentMessage buymessage = new BuyInstrumentMessage(ch.getUid(), "VIOLON", 1, "MSE", 500);
-		ch.write(buymessage);
+		ch.write(new MarketDataRequestMessage("Violon"));
+		ch.write(new MarketDataRequestMessage("Violon"));
+		
+		
 		return true;
 	}
 }
