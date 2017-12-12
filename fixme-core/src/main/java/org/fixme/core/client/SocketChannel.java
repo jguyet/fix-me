@@ -24,6 +24,7 @@ public class SocketChannel {
 	//##############################
 	
 	private int							uid;
+	private int							routeId;
 	private AsynchronousSocketChannel	channel;
 	
 	//##############################################################################
@@ -33,6 +34,7 @@ public class SocketChannel {
 	public SocketChannel(AsynchronousSocketChannel ch) {
 		this.channel = ch;
 		this.uid = SocketChannel.CHANNEL_DIGIT_UID++;
+		this.routeId = 1;
 	}
 	
 	//##############################################################################
@@ -45,6 +47,24 @@ public class SocketChannel {
 
 	public void setUid(int uid) {
 		this.uid = uid;
+	}
+	
+	/**
+	 * For router
+	 * @return
+	 */
+	@Deprecated
+	public int getRouteId() {
+		return routeId;
+	}
+	
+	/**
+	 * For router 
+	 * @param routeId
+	 */
+	@Deprecated
+	public void setRouteId(int routeId) {
+		this.routeId = routeId;
 	}
 
 	public AsynchronousSocketChannel getChannel() {
