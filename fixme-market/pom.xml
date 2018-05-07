@@ -109,7 +109,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>org.fixme.market.App</mainClass>
+            <mainClass>org.fixme.market.Market</mainClass>
           </manifest>
         </archive>
       </configuration>

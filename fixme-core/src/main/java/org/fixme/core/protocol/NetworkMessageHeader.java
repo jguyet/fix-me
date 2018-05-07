@@ -16,21 +16,12 @@ public class NetworkMessageHeader {
 	
 	private int id;
 	
-	@Max(value=1050)
-	@Min(value=1000)
-	private int messageId;
-	
-	@Min(value=0)
-	private int length;
-	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public NetworkMessageHeader(int id, int messageId, int length) {
+	public NetworkMessageHeader(int id) {
 		this.id = id;
-		this.messageId = messageId;
-		this.length = length;
 	}
 	
 	//##############################################################################
@@ -43,21 +34,5 @@ public class NetworkMessageHeader {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getMessageId() {
-		return messageId;
-	}
-
-	public void setMessageId(int id) {
-		this.messageId = id;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
 	}
 }

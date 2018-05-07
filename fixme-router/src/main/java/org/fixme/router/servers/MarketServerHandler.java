@@ -1,5 +1,8 @@
 package org.fixme.router.servers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
@@ -16,9 +19,11 @@ import org.slf4j.LoggerFactory;
  */
 public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 
-	private static Logger					logger = LoggerFactory.getLogger(MarketServerHandler.class);
+	private static Logger						logger = LoggerFactory.getLogger(MarketServerHandler.class);
 	
-	public static RoutingTable				marketRoutingTable = new RoutingTable();
+	public static Map<Integer, SocketChannel>	markets = new HashMap<Integer, SocketChannel>();
+	public static RoutingTable					marketRoutingTable = new RoutingTable();
+	public static int							MARKET_UIDS = 0;
 	
 	/**
 	 * MarketServerHandler constructor
@@ -27,28 +32,32 @@ public class MarketServerHandler implements IASynchronousSocketChannelHandler {
 		//nothing to do
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onStartConnection(SocketChannel ch) {
-		
-		//create route for market
-		int routeId = marketRoutingTable.addRoute(new Route(ch));
-		//set route to market
-		ch.setRouteId(routeId);
+		ch.setUid(++MARKET_UIDS);
 		ch.write(new AttributeRouterUniqueIdentifiantMessage(ch.getUid()));
+		markets.put(ch.getUid(), ch);
+		marketRoutingTable.addRoute(new Route(ch));
 		logger.info("{} - Market: Accepte connection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = MarketSocketServerMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Market: New message INTERNALID={}|RID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), ch.getRouteId(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Market: New message MARKETID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", RouterProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
-		logger.info("{} - Market: Disconnection from {}", RouterProperties.MODULE_NAME, ch.getRemoteAddress());
+		logger.error("{} - Market: Disconnection from {}|MARKETID={}", RouterProperties.MODULE_NAME, ch.getRemoteAddress(), ch.getUid());
+		if (markets.containsKey(ch.getUid()))
+			markets.remove(ch.getUid());
+		marketRoutingTable.removeRoute(ch.getUid());
+	}
+
+	@Override
+	public void onErrorJsonParser(SocketChannel ch) {
+		//...
 	}
 }

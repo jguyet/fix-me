@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.fixme.broker.Broker;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
@@ -64,12 +65,14 @@ public class SocketBrokerMessageHandlerFactory {
 
     	try
     	{   
+    		if (Broker.prompt == null)
+    			return false;
     		if (messagesHandler.containsKey(message.messageId()))
 	        {
 	        	Method m = messagesHandler.get(message.messageId());
 	        	
 	        	m.setAccessible(true);
-	        	boolean result = (Boolean) m.invoke(Boolean.class, channel, message);
+	        	boolean result = (Boolean) m.invoke(Boolean.class, Broker.prompt, channel, message);
 	        	return (result);
 	        }
     	} catch (Exception e)

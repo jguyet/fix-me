@@ -1,6 +1,11 @@
-org/fixme/broker/App$1.class
-org/fixme/broker/App.class
+org/fixme/broker/prompt/BrokerPrompt.class
 org/fixme/broker/socket/SocketBrokerMessageHandlerFactory.class
+org/fixme/broker/socket/SocketBroker.class
+org/fixme/broker/Broker.class
+org/fixme/broker/socket/handler/MarketInformationsHandler.class
+org/fixme/broker/socket/handler/TransactionBrokerHandler.class
+org/fixme/broker/prompt/BrokerPrompt$CommandLineGetter.class
 org/fixme/broker/socket/handler/StartConnectionHandler.class
 org/fixme/broker/BrokerProperties.class
-org/fixme/broker/socket/SocketBroker.class
+org/fixme/broker/prompt/CommandListener.class
+org/fixme/broker/Broker$1.class

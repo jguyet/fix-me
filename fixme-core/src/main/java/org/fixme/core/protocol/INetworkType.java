@@ -1,5 +1,7 @@
 package org.fixme.core.protocol;
 
+import org.fixme.core.utils.Json;
+
 public interface INetworkType {
 
 	/**
@@ -7,12 +9,12 @@ public interface INetworkType {
 	 * write on buffer all message properties
 	 * @param buffer
 	 */
-	public void serialize(ByteArrayBuffer buffer);
+	public void serialize(Json buffer);
 	
 	/**
 	 * Message deserializer method<br>
 	 * read buffer content for load message properties
 	 * @param buffer
 	 */
-	public void deserialize(ByteArrayBuffer buffer);
+	public void deserialize(Json buffer);
 }

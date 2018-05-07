@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.fixme.core.utils.Json;
 import org.reflections.Reflections;
 
 public class NetworkMessageFactory {
@@ -44,24 +45,24 @@ public class NetworkMessageFactory {
 	//@FACTORY METHODS SECTION ---------------------------------------------------->
 	//##############################################################################
 	
-	public static NetworkMessage createNetworkMessage(NetworkMessageHeader header, ByteArrayBuffer buffer) {
+	public static NetworkMessage createNetworkMessage(NetworkMessageHeader header, Json jsonMessage) {
 		
 		NetworkMessage result = null;
     	
     	try
 		{
-			if (messages.containsKey(header.getMessageId()))
+			if (messages.containsKey(header.getId()))
 			{
-				Constructor<?>[] contructors = messages.get(header.getMessageId()).getConstructors();
+				Constructor<?>[] contructors = messages.get(header.getId()).getConstructors();
 				
 				for (Constructor<?> c : contructors)
 				{
 					if (c.getGenericParameterTypes().length != 1)
 						continue ;
-					if (!c.getParameters()[0].getType().getName().equalsIgnoreCase(ByteArrayBuffer.class.getName()))
+					if (!c.getParameters()[0].getType().getName().equalsIgnoreCase(Json.class.getName()))
 						continue ;
 					c.setAccessible(true);
-					result = (NetworkMessage)c.newInstance(buffer);
+					result = (NetworkMessage)c.newInstance(jsonMessage);
 					break ;
 				}
 				//TODO

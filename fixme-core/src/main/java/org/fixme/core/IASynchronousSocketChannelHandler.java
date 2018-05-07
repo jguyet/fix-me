@@ -26,4 +26,7 @@ public interface IASynchronousSocketChannelHandler {
 	 * @param ch SocketChannel
 	 */
 	public void onConnectionClosed(SocketChannel ch);
+	
+	
+	public void onErrorJsonParser(SocketChannel ch);
 }

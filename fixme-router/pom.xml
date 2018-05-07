@@ -105,7 +105,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>org.fixme.router.App</mainClass>
+            <mainClass>org.fixme.router.Router</mainClass>
           </manifest>
         </archive>
       </configuration>

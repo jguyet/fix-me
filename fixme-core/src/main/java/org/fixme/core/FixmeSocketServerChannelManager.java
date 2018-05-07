@@ -1,20 +1,22 @@
 package org.fixme.core;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.fixme.core.client.SocketChannel;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.NetworkMessageFactory;
 import org.fixme.core.protocol.NetworkMessageHeader;
 import org.fixme.core.protocol.NetworkProtocolMessage;
-import org.fixme.core.protocol.utils.CheckSum;
+import org.fixme.core.utils.Json;
 import org.fixme.core.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +106,6 @@ public class FixmeSocketServerChannelManager {
 			@Override
 			public void completed(Integer result, SocketChannel channel) {
 				buffer.flip();
-				
 				/**
 				 * IF result == -1 connection are closed
 				 */
@@ -112,32 +113,56 @@ public class FixmeSocketServerChannelManager {
 					handler.onConnectionClosed(channel);
 					return ;
 				}
+				byte[] array = new byte[result];
+				buffer.get(array);
 				//build buffer
-				ByteArrayBuffer finalbuffer = new ByteArrayBuffer();
-				finalbuffer.write(channel.splittedMessage);
-				finalbuffer.write(buffer.array(), 0, result);
-				finalbuffer.flip();
+				String finalbuffer = null;
+				try {
+					channel.splittedMessage += new String(array, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					channel.splittedMessage = "";
+					startOnReadSocketChannel(socketChannel);
+					return ;
+				}
 				
-				//reset split channel var
-				channel.splittedMessage = new ByteArrayBuffer();
 				
-				if (finalbuffer.size() < NetworkProtocolMessage.STATIC_HEADER_LEN) {
-					channel.splittedMessage = finalbuffer;
+				for (int i = 0; i < channel.splittedMessage.length(); i++) {
+					if (channel.splittedMessage.charAt(i) == '\n' && i > 0) {
+						finalbuffer = channel.splittedMessage.substring(0, i);
+						if (channel.splittedMessage.length() > i + 1) {
+							channel.splittedMessage = channel.splittedMessage.substring(i + 1);
+						}
+						else
+							channel.splittedMessage = "";
+					}
+				}
+				if (finalbuffer == null) {
 					//start to read next message again
 					startOnReadSocketChannel(socketChannel);
 					return ;
 				}
 				/**
-				 * BUILD HEADER OF MESSAGE
+				 * BUILD MESSAGE
 				 */
-				NetworkMessageHeader header = NetworkProtocolMessage.readHeader(finalbuffer);
+				Json jsonMessage = null;
 				
+				try {
+					jsonMessage = new Json(finalbuffer);
+				} catch (Exception e) {
+					handler.onErrorJsonParser(channel);
+					handler.onConnectionClosed(channel);
+					return ;
+				}
+				/**
+				 * BUILD HEADER
+				 */
+				NetworkMessageHeader header = NetworkProtocolMessage.readHeader(jsonMessage);
 				if (header == null) {
 					//start to read next message again
 					startOnReadSocketChannel(socketChannel);
 					return ;
 				}
-				
 				/**
 				 * CHECK IF HEADER IS VALID
 				 */
@@ -147,17 +172,7 @@ public class FixmeSocketServerChannelManager {
 					return ;
 				}
 				
-				/**
-				 * WAIT END OF MESSAGE
-				 */
-				if (finalbuffer.size() - NetworkProtocolMessage.STATIC_HEADER_LEN < header.getLength()) {
-					channel.splittedMessage = finalbuffer;
-					//start to read next message again
-					startOnReadSocketChannel(socketChannel);
-					return ;
-				}
-				
-				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, finalbuffer);
+				NetworkMessage message = NetworkMessageFactory.createNetworkMessage(header, jsonMessage);
 				
 				if (message != null) {
 					/**
@@ -174,7 +189,6 @@ public class FixmeSocketServerChannelManager {
 						startOnReadSocketChannel(socketChannel);
 						return ;
 					}
-					
 					/**
 					 * CHECK IF MESSAGE IS VALID
 					 */
@@ -183,7 +197,6 @@ public class FixmeSocketServerChannelManager {
 						startOnReadSocketChannel(socketChannel);
 						return ;
 					}
-					
 					/**
 					 * CALL HANDLER METHOD OF MESSAGE RECEIVER
 					 */

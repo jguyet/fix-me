@@ -4,7 +4,7 @@ import org.fixme.core.FixmeSocketChannelManager;
 import org.fixme.core.IASynchronousSocketChannelHandler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.market.App;
+import org.fixme.market.Market;
 import org.fixme.market.MarketProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,13 +57,18 @@ public class SocketMarket implements IASynchronousSocketChannelHandler {
 	public void onMessageReceived(SocketChannel ch, NetworkMessage message) {
 		boolean handled = SocketMarketMessageHandlerFactory.handleMessage(ch, message);
 		
-		logger.info("{} - Router: New message RID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", MarketProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
+		logger.info("{} - Router: New message ROUTERID={}|MSGTYPE={}|MSGCONTENT({})|CHECKSUM={}|HANDLED={}", MarketProperties.MODULE_NAME, ch.getUid(), message.getName(), message.toString(), message.getCheckSum(), handled);
 	}
 
 	@Override
 	public void onConnectionClosed(SocketChannel ch) {
-		App.stopped = true;
+		Market.stopped = true;
 		if (ch.isOpen() != false)
 			logger.info("{} - Router: Connection closed from {}", MarketProperties.MODULE_NAME, ch.getRemoteAddress());
+	}
+
+	@Override
+	public void onErrorJsonParser(SocketChannel ch) {
+		//...
 	}
 }

@@ -1,27 +1,27 @@
 package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.AnnotationMessageID;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.utils.Json;
 
 @AnnotationMessageID(MarketDataRequestMessage.MESSAGE_ID)
 public class MarketDataRequestMessage extends NetworkMessage {
 
 	public static final int MESSAGE_ID = 1006;
 	
-	public String	marketName;
+	public int	brokerId;
 	
 	@Override
 	public int messageId() {
 		return MESSAGE_ID;
 	}
 	
-	public MarketDataRequestMessage(ByteArrayBuffer buffer) {
+	public MarketDataRequestMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public MarketDataRequestMessage(String marketName) {
-		this.marketName = marketName;
+	public MarketDataRequestMessage(int brokerId) {
+		this.brokerId = brokerId;
 	}
 
 	@Override
@@ -30,20 +30,20 @@ public class MarketDataRequestMessage extends NetworkMessage {
 	}
 
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeString(this.marketName);
+	public void serialize(Json buffer) {
+		buffer.put("BROKER_ID", this.brokerId);
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.marketName = buffer.readString();
+	public void deserialize(Json buffer) {
+		this.brokerId = buffer.getInt("BROKER_ID");
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("MARKET=").append(this.marketName);
+		str.append("BROKER_ID=").append(this.brokerId);
 		
 		return str.toString();
 	}

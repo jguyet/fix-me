@@ -3,8 +3,10 @@ package org.fixme.core.database;
 import org.fixme.core.LoggingProperties;
 import org.fixme.core.database.collections.InstrumentCollectionDAO;
 import org.fixme.core.database.collections.MarketCollectionDAO;
-import org.fixme.core.protocol.types.Instrument;
-import org.fixme.core.protocol.types.Market;
+import org.fixme.core.database.collections.WalletCollectionDAO;
+import org.fixme.core.protocol.types.InstrumentObject;
+import org.fixme.core.protocol.types.MarketObject;
+import org.fixme.core.protocol.types.WalletObject;
 import org.slf4j.LoggerFactory;
 
 import com.google.code.morphia.Morphia;
@@ -50,6 +52,7 @@ public class Database {
     //Collections
     private InstrumentCollectionDAO		instrumentCollection;
     private MarketCollectionDAO			marketCollection;
+    private WalletCollectionDAO			walletCollection;
     
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
@@ -95,11 +98,15 @@ public class Database {
     	}
     	Morphia morphia = new Morphia();
     	
-    	morphia.map(Instrument.class);
+    	morphia.map(InstrumentObject.class);
     	instrumentCollection = new InstrumentCollectionDAO(this.mongoClient, morphia, this.databaseName);
     	
-    	morphia.map(Market.class);
+    	morphia.map(MarketObject.class);
     	marketCollection = new MarketCollectionDAO(this.mongoClient, morphia, this.databaseName);
+    	
+    	morphia.map(WalletObject.class);
+    	walletCollection = new WalletCollectionDAO(this.mongoClient, morphia, this.databaseName);
+    	
     	logger.info("MongoCollections builded");
     }
     

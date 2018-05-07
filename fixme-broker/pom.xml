@@ -109,7 +109,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>org.fixme.broker.App</mainClass>
+            <mainClass>org.fixme.broker.Broker</mainClass>
           </manifest>
         </archive>
       </configuration>

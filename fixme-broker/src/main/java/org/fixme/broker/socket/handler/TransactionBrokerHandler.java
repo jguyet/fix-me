@@ -1,5 +1,6 @@
 package org.fixme.broker.socket.handler;
 
+import org.fixme.broker.prompt.BrokerPrompt;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.ExecutedRequestMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
@@ -28,7 +29,7 @@ public class TransactionBrokerHandler {
 	 * @return
 	 */
 	@MethodMessageHandler(ExecutedRequestMessage.MESSAGE_ID)
-	public static boolean onTransactionMessageExecuted(SocketChannel channel, ExecutedRequestMessage message) {
+	public static boolean onTransactionMessageExecuted(BrokerPrompt prompt, SocketChannel channel, ExecutedRequestMessage message) {
 		
 		return true;
 	}
@@ -40,7 +41,7 @@ public class TransactionBrokerHandler {
 	 * @return
 	 */
 	@MethodMessageHandler(RejectedRequestMessage.MESSAGE_ID)
-	public static boolean onTransactionMessageRejected(SocketChannel channel, RejectedRequestMessage message) {
+	public static boolean onTransactionMessageRejected(BrokerPrompt prompt, SocketChannel channel, RejectedRequestMessage message) {
 		
 		return true;
 	}

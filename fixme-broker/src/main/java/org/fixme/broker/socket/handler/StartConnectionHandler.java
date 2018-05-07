@@ -1,5 +1,6 @@
 package org.fixme.broker.socket.handler;
 
+import org.fixme.broker.prompt.BrokerPrompt;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
 import org.fixme.core.protocol.messages.MarketDataRequestMessage;
@@ -24,13 +25,10 @@ public class StartConnectionHandler {
 	 * @return boolean
 	 */
 	@MethodMessageHandler(AttributeRouterUniqueIdentifiantMessage.MESSAGE_ID)
-	public static boolean attributeRouterUniqueIdentifiantMessageHandler(SocketChannel ch, AttributeRouterUniqueIdentifiantMessage message) {
+	public static boolean attributeRouterUniqueIdentifiantMessageHandler(BrokerPrompt prompt, SocketChannel ch, AttributeRouterUniqueIdentifiantMessage message) {
 		ch.setUid(message.id);
-		
-		ch.write(new MarketDataRequestMessage("Violon"));
-		ch.write(new MarketDataRequestMessage("Violon"));
-		
-		
+		prompt.setUid(message.id);
+		ch.write(new MarketDataRequestMessage(ch.getUid()));
 		return true;
 	}
 }

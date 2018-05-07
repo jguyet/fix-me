@@ -1,8 +1,8 @@
 package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.AnnotationMessageID;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.utils.Json;
 
 @AnnotationMessageID(RejectedRequestMessage.MESSAGE_ID)
 public class RejectedRequestMessage extends NetworkMessage{
@@ -14,16 +14,19 @@ public class RejectedRequestMessage extends NetworkMessage{
 	//##############################
 	public int brokerId;
 	
+	public String response;
+	
 	//##############################################################################
 	//@CONSTRUCTOR SECTION -------------------------------------------------------->
 	//##############################################################################
 	
-	public RejectedRequestMessage(ByteArrayBuffer buffer) {
+	public RejectedRequestMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public RejectedRequestMessage(int brokerId) {
+	public RejectedRequestMessage(int brokerId, String response) {
 		this.brokerId = brokerId;
+		this.response = response;
 	}
 	
 	//##############################################################################
@@ -41,20 +44,23 @@ public class RejectedRequestMessage extends NetworkMessage{
 	}
 
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeInt(this.brokerId);
+	public void serialize(Json buffer) {
+		buffer.put("BROKERID", this.brokerId);
+		buffer.put("RESPONSE", this.response);
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.brokerId = buffer.readInt();
+	public void deserialize(Json buffer) {
+		this.brokerId = buffer.getInt("BROKERID");
+		this.response = buffer.getString("RESPONSE");
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("BROKERID=").append(this.brokerId);
+		str.append("BROKERID=").append(this.brokerId).append("|");
+		str.append("RESPONSE=").append(this.response);
 		
 		return str.toString();
 	}

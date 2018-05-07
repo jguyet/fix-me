@@ -1,20 +1,30 @@
 package org.fixme.broker;
 
+import java.util.ArrayList;
+
+import org.fixme.broker.prompt.BrokerPrompt;
 import org.fixme.broker.socket.SocketBroker;
 import org.fixme.core.LoggingProperties;
+import org.fixme.core.client.SocketChannel;
+import org.fixme.core.protocol.types.MarketObject;
 
 /**
  * Broker App
  * @author jguyet
  */
-public class App 
+public class Broker 
 {	
 	//##############################
 	//@STATICS SECTION ------------>
 	//##############################
 	
-	public static SocketBroker		socket;
-	public static boolean			stopped = false;
+	public static SocketBroker				socket;
+	public static SocketChannel				router = null;
+	public static boolean					stopped = false;
+	public static BrokerPrompt				prompt = null;
+	public static ArrayList<MarketObject>	markets = new ArrayList<MarketObject>();
+	
+	public static boolean			initialized_connection = false;
 	
 	//##############################
 	//@MAIN SECTION --------------->
@@ -26,6 +36,8 @@ public class App
     	
     	LoggingProperties.load();
     	
+    	prompt = new BrokerPrompt();
+    	
     	socket = new SocketBroker(BrokerProperties.SOCKET_SERVER_ROUTER_BROKER_IP_ADDRESS, BrokerProperties.SOCKET_SERVER_ROUTER_BROKER_PORT);
     	
     	socket.intialize();
@@ -33,9 +45,11 @@ public class App
     	//################
     	//WAIT STOPPED SIG
     	while (stopped == false) {
+    		if (initialized_connection == true) {
+    			prompt.start();
+    		}
     		try { Thread.sleep(500); } catch(Exception e) { e.printStackTrace(); }
     	}
-    	
     	socket.stop();
     }
     
@@ -47,9 +61,9 @@ public class App
     	Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
                 public void run() {
-            		if (App.stopped)
+            		if (Broker.stopped)
             			return ;
-            		System.out.println("Shutdown hook system exit");
+            		System.out.println("");
             		if (socket != null) {
             			socket.stop();
             		}

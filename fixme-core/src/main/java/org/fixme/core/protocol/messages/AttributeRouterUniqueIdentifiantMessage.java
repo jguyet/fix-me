@@ -1,10 +1,13 @@
 package org.fixme.core.protocol.messages;
 
+import java.util.Map;
+
 import javax.validation.constraints.Min;
 
 import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.utils.Json;
 
 @AnnotationMessageID(AttributeRouterUniqueIdentifiantMessage.MESSAGE_ID)
 public class AttributeRouterUniqueIdentifiantMessage extends NetworkMessage {
@@ -22,7 +25,7 @@ public class AttributeRouterUniqueIdentifiantMessage extends NetworkMessage {
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public AttributeRouterUniqueIdentifiantMessage(ByteArrayBuffer buffer) {
+	public AttributeRouterUniqueIdentifiantMessage(Json buffer) {
 		super(buffer);
 	}
 	
@@ -45,13 +48,13 @@ public class AttributeRouterUniqueIdentifiantMessage extends NetworkMessage {
 	}
 	
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeInt(this.id);
+	public void serialize(Json buffer) {
+		buffer.put("ID", this.id);
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.id = buffer.readInt();
+	public void deserialize(Json buffer) {
+		this.id = buffer.getInt("ID");
 	}
 
 	@Override

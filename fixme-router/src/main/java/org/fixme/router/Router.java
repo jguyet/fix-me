@@ -11,7 +11,7 @@ import org.fixme.router.servers.MarketServerHandler;
  * Main application.
  * @author jguyet
  */
-public class App 
+public class Router 
 {	
 	/**
 	 * HANDLERS
@@ -90,7 +90,7 @@ public class App
     	Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
                 public void run() {
-            		if (App.stopped)
+            		if (Router.stopped)
             			return ;
                     System.out.println("Shutdown hook system exit");
                     if (brokerServer != null && marketServer != null) {

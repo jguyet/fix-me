@@ -1,21 +1,23 @@
 package org.fixme.core.protocol.types;
 
+import java.util.Map;
+
 import org.fixme.core.database.collections.BaseCollection;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.INetworkType;
+import org.fixme.core.utils.Json;
 
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Property;
 
 @Entity
-public class Instrument extends BaseCollection implements INetworkType {
+public class InstrumentObject extends BaseCollection implements INetworkType {
 	
 	//##############################
 	//@PRIVATE VARIABLES SECTION -->
 	//##############################
 	
-	@Property("name")
-	private String	name;
+	@Property("wallet")
+	private String	wallet;
 	
 	@Property("quantity")
 	private int		quantity;
@@ -27,10 +29,10 @@ public class Instrument extends BaseCollection implements INetworkType {
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public Instrument() { }
+	public InstrumentObject() { }
 	
-	public Instrument(String name, int quantity, int price) {
-		this.name = name;
+	public InstrumentObject(String wallet, int quantity, int price) {
+		this.wallet = wallet;
 		this.quantity = quantity;
 		this.price = price;
 	}
@@ -39,12 +41,12 @@ public class Instrument extends BaseCollection implements INetworkType {
 	//@GETTER SETTER SECTION ------------------------------------------------------>
 	//##############################################################################
 
-	public String getName() {
-		return name;
+	public String getWallet() {
+		return wallet;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setWallet(String wallet) {
+		this.wallet = wallet;
 	}
 
 	public int getQuantity() {
@@ -68,16 +70,27 @@ public class Instrument extends BaseCollection implements INetworkType {
 	//##############################################################################
 
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeString(this.name);
-		buffer.writeInt(this.quantity);
-		buffer.writeInt(this.price);
+	public void serialize(Json buffer) {
+		buffer.put("WALLET", this.wallet);
+		buffer.put("QUANTITY", this.quantity);
+		buffer.put("PRICE", this.price);
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.name = buffer.readString();
-		this.quantity = buffer.readInt();
-		this.price = buffer.readInt();
+	public void deserialize(Json buffer) {
+		this.wallet = buffer.getString("WALLET");
+		this.quantity = buffer.getInt("QUANTITY");
+		this.price = buffer.getInt("PRICE");
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		
+		str.append("WALLET=").append(this.wallet).append("|");
+		str.append("QUANTITY=").append(this.quantity).append("|");
+		str.append("PRICE=").append(this.price);
+		
+		return str.toString();
 	}
 }

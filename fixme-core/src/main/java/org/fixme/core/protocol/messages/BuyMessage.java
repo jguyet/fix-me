@@ -4,14 +4,14 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.fixme.core.protocol.AnnotationMessageID;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.utils.Json;
 
-@AnnotationMessageID(SellInstrumentMessage.MESSAGE_ID)
-public class SellInstrumentMessage extends NetworkMessage {
-	
-	public static final int MESSAGE_ID = 1003;
-	
+@AnnotationMessageID(BuyMessage.MESSAGE_ID)
+public class BuyMessage extends NetworkMessage {
+
+	public static final int MESSAGE_ID = 1002;
+
 	//##############################
 	//@VARIABLES SECTION ---------->
 	//##############################
@@ -29,14 +29,14 @@ public class SellInstrumentMessage extends NetworkMessage {
 	public int			price;
 	
 	//##############################################################################
-	//@CONSTRUCTOR SECTION -------------------------------------------------------->
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public SellInstrumentMessage(ByteArrayBuffer buffer) {
+	public BuyMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public SellInstrumentMessage(String instrument, int quantity, String marketName, int price) {
+	public BuyMessage(String instrument, int quantity, String marketName, int price) {
 		this.instrument = instrument;
 		this.quantity = quantity;
 		this.marketName = marketName;
@@ -46,7 +46,7 @@ public class SellInstrumentMessage extends NetworkMessage {
 	//##############################################################################
 	//@METHODS SECTION ------------------------------------------------------------>
 	//##############################################################################
-	
+
 	@Override
 	public int messageId() {
 		return MESSAGE_ID;
@@ -54,23 +54,25 @@ public class SellInstrumentMessage extends NetworkMessage {
 
 	@Override
 	public String getName() {
-		return "SellInstrumentMessage";
+		return "BuyInstrumentMessage";
 	}
 
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeString(this.instrument);
-		buffer.writeInt(this.quantity);
-		buffer.writeString(this.marketName);
-		buffer.writeInt(this.price);
+	public void serialize(Json buffer) {
+		
+		buffer.put("INSTRUMENT", this.instrument);
+		buffer.put("QUANTITY", this.quantity + "");
+		buffer.put("MARKET", this.marketName);
+		buffer.put("PRICE", this.price + "");
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.instrument = buffer.readString();
-		this.quantity = buffer.readInt();
-		this.marketName = buffer.readString();
-		this.price = buffer.readInt();
+	public void deserialize(Json buffer) {
+		
+		this.instrument = buffer.getString("INSTRUMENT");
+		this.quantity = buffer.getInt("QUANTITY");
+		this.marketName = buffer.getString("MARKET");
+		this.price = buffer.getInt("PRICE");
 	}
 
 	@Override

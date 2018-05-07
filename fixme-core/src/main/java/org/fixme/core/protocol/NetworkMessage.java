@@ -1,10 +1,12 @@
 package org.fixme.core.protocol;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.fixme.core.protocol.utils.CheckSum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fixme.core.utils.Json;
 
 /**
  * Abstract class NetworkMessage<br>
@@ -18,34 +20,25 @@ public abstract class NetworkMessage {
 	//@PRIVATE VARIABLES SECTION -->
 	//##############################
 	
-	private ByteArrayBuffer	buffer;
-	private int				mindId;
-	private String			checkSum;
+	private Json 				jsonMessage;
+	private String				checkSum;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public NetworkMessage(ByteArrayBuffer buffer) {
-		this.buffer = buffer;
+	public NetworkMessage(Json jsonMessage) {
+		this.jsonMessage = jsonMessage;
 	}
 	
 	public NetworkMessage() {
-		this.buffer = new ByteArrayBuffer();
+		this.jsonMessage = new Json();
 	}
 	
 	//##############################################################################
 	//@GETTER SETTER SECTION ------------------------------------------------------>
 	//##############################################################################
-	
-	public void setmindId(int id) {
-		this.mindId = id;
-	}
-	
-	public int getmindId() {
-		return mindId;
-	}
-	
+
 	public String getCheckSum() {
 		return this.checkSum;
 	}
@@ -56,22 +49,21 @@ public abstract class NetworkMessage {
 	
 	public void serialize_message() {
 		
+		this.jsonMessage = new Json();
 		//WRITE HEADER
-		NetworkMessageHeader header = new NetworkMessageHeader(this.mindId, this.messageId(), this.buffer.size());
-		ByteArrayBuffer serializedHeader = NetworkProtocolMessage.writeHeader(header);
-		this.buffer.write(serializedHeader);
-		
-		serialize(this.buffer);
+		NetworkMessageHeader header = new NetworkMessageHeader(this.messageId());
+		NetworkProtocolMessage.writeHeader(header, this.jsonMessage);
+
+		serialize(this.jsonMessage);
 		
 		//WRITE CHECKSUM
-		this.buffer.writeString(CheckSum.get(this.buffer.array()));
+		this.jsonMessage.put("CHECKSUM", buildCheckSum());
 	}
 	
 	public void deserialize_message() {
-		deserialize(this.buffer);
-		
 		//READ CHECKSUM
-		this.checkSum = this.buffer.readString();
+		this.checkSum = this.jsonMessage.getString("CHECKSUM");
+		deserialize(this.jsonMessage);
 	}
 	
 	/**
@@ -80,15 +72,17 @@ public abstract class NetworkMessage {
 	 * @return String
 	 */
 	public String buildCheckSum() {
-		int endoffset = ByteArrayBuffer.BYTE_INT_SIZE + this.checkSum.length();
 		
-		String checksum = CheckSum.get(this.buffer.array(0, this.buffer.size() - endoffset));
-		return checksum;
+		this.jsonMessage.remove("CHECKSUM");
+		
+		byte[] buffer = this.jsonMessage.toString().getBytes();
+		
+		return CheckSum.get(buffer);
 	}
 	
-	public ByteBuffer array() {
-		this.buffer.flip();
-		return this.buffer.getByteBuffer();
+	public byte[] array() {
+		
+		return this.jsonMessage.toString().getBytes();
 	}
 	
 	//##############################################################################
@@ -112,14 +106,14 @@ public abstract class NetworkMessage {
 	 * write on buffer all message properties
 	 * @param buffer
 	 */
-	public abstract void serialize(ByteArrayBuffer buffer);
+	public abstract void serialize(Json buffer);
 	
 	/**
 	 * Message deserializer method<br>
 	 * read buffer content for load message properties
 	 * @param buffer
 	 */
-	public abstract void deserialize(ByteArrayBuffer buffer);
+	public abstract void deserialize(Json buffer);
 	
 	/**
 	 * Message toString method for watch properties of message 

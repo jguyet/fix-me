@@ -1,8 +1,8 @@
 package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.AnnotationMessageID;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.utils.Json;
 
 @AnnotationMessageID(ExecutedRequestMessage.MESSAGE_ID)
 public class ExecutedRequestMessage extends NetworkMessage {
@@ -18,7 +18,7 @@ public class ExecutedRequestMessage extends NetworkMessage {
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public ExecutedRequestMessage(ByteArrayBuffer buffer) {
+	public ExecutedRequestMessage(Json buffer) {
 		super(buffer);
 	}
 	
@@ -41,13 +41,13 @@ public class ExecutedRequestMessage extends NetworkMessage {
 	}
 
 	@Override
-	public void serialize(ByteArrayBuffer buffer) {
-		buffer.writeInt(this.brokerId);
+	public void serialize(Json buffer) {
+		buffer.put("BROKERID", this.brokerId);
 	}
 
 	@Override
-	public void deserialize(ByteArrayBuffer buffer) {
-		this.brokerId = buffer.readInt();
+	public void deserialize(Json buffer) {
+		this.brokerId = buffer.getInt("BROKERID");
 	}
 
 	@Override
