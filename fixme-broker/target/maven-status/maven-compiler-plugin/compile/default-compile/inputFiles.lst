@@ -7,3 +7,4 @@
 /Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/Broker.java
 /Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/socket/handler/TransactionBrokerHandler.java
 /Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/prompt/BrokerPrompt.java
+/Users/jguyet/git/fix-me/fixme-broker/src/main/java/org/fixme/broker/prompt/CallBackRequestMessage.java

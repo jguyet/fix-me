@@ -1,13 +1,9 @@
 package org.fixme.market;
 
-import org.bson.types.ObjectId;
 import org.fixme.core.LoggingProperties;
 import org.fixme.core.database.Database;
-import org.fixme.core.protocol.types.OrderObject;
-import org.fixme.core.protocol.types.MarketObject;
+import org.fixme.core.protocol.types.WalletObject;
 import org.fixme.market.socket.SocketMarket;
-
-import com.google.code.morphia.query.QueryResults;
 
 /**
  * Market App
@@ -41,6 +37,14 @@ public class Market
     	database.buildDatabaseOptions();
     	database.buildDatabaseConnection();
     	database.buildCollections();
+    	
+//    	WalletObject wallet = database.getWalletCollection().findOne("wallet", "TEST");
+//    	
+//    	System.out.println(wallet.toString());
+    	
+    	//database.getWalletCollection().save(new WalletObject("TEST", "BTC", 10));
+    	
+    	//Market.database.getMarketCollection().findOne("", value)
     	
     	//QueryResults<MarketObject> a = database.getMarketCollection().find();
     	

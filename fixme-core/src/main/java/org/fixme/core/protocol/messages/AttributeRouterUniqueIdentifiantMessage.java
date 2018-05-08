@@ -59,7 +59,9 @@ public class AttributeRouterUniqueIdentifiantMessage extends NetworkMessage {
 
 	@Override
 	public String toString() {
-		return "ID=" + this.id;
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 
 }

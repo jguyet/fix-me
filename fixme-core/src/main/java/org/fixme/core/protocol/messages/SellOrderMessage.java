@@ -26,6 +26,8 @@ public class SellOrderMessage extends NetworkMessage {
 	
 	public float		price;
 	
+	public String		wallet;
+	
 	//##############################################################################
 	//@CONSTRUCTOR SECTION -------------------------------------------------------->
 	//##############################################################################
@@ -34,12 +36,13 @@ public class SellOrderMessage extends NetworkMessage {
 		super(buffer);
 	}
 	
-	public SellOrderMessage(int brokerId, int marketId, String instrument, int quantity, String marketName, int price) {
+	public SellOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String wallet) {
 		this.brokerId = brokerId;
 		this.marketId = marketId;
 		this.instrument = instrument;
 		this.quantity = quantity;
 		this.price = price;
+		this.wallet = wallet;
 	}
 	
 	//##############################################################################
@@ -53,16 +56,17 @@ public class SellOrderMessage extends NetworkMessage {
 
 	@Override
 	public String getName() {
-		return "SellInstrumentMessage";
+		return "SellOrderMessage";
 	}
 
 	@Override
 	public void serialize(Json buffer) {
-		buffer.put("BORKERID", this.brokerId);
+		buffer.put("BROKERID", this.brokerId);
 		buffer.put("MARKETID", this.marketId);
 		buffer.put("INSTRUMENT", this.instrument);
 		buffer.put("QUANTITY", this.quantity);
 		buffer.put("PRICE", this.price);
+		buffer.put("WALLET", this.wallet);
 	}
 
 	@Override
@@ -70,21 +74,16 @@ public class SellOrderMessage extends NetworkMessage {
 		this.brokerId = buffer.getInt("BROKERID");
 		this.marketId = buffer.getInt("MARKETID");
 		this.instrument = buffer.getString("INSTRUMENT");
-		this.quantity = buffer.getInt("QUANTITY");
-		this.price = buffer.getInt("PRICE");
+		this.quantity = buffer.getFloat("QUANTITY");
+		this.price = buffer.getFloat("PRICE");
+		this.wallet = buffer.getString("WALLET");
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("BROKERID=").append(this.brokerId).append("|");
-		str.append("MARKETID=").append(this.marketId).append("|");
-		str.append("INSTRUMENT=").append(this.instrument).append("|");
-		str.append("QUANTITY=").append(this.quantity).append("|");
-		str.append("PRICE=").append(this.price);
-		
-		return str.toString();
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 
 }

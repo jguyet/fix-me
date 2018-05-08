@@ -80,4 +80,11 @@ public class MarketObject extends BaseCollection implements INetworkType {
 		this.buy = buffer.getFloat("BUY");
 		this.sell = buffer.getFloat("SELL");
 	}
+	
+	@Override
+	public String toString() {
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
+	}
 }

@@ -4,35 +4,41 @@ import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.utils.Json;
 
-@AnnotationMessageID(RejectedRequestMessage.MESSAGE_ID)
-public class RejectedRequestMessage extends NetworkMessage{
+@AnnotationMessageID(CreateWalletMessage.MESSAGE_ID)
+public class CreateWalletMessage extends NetworkMessage {
 
-	public static final int MESSAGE_ID = 1005;
+	public static final int MESSAGE_ID = 1010;
 	
 	//##############################
 	//@VARIABLES SECTION ---------->
 	//##############################
-	public int brokerId;
+	public int		brokerId;
 	
-	public String response;
+	public int		marketId;
+	
+	public String	instrument;
+	
+	public float	quantity;
 	
 	//##############################################################################
-	//@CONSTRUCTOR SECTION -------------------------------------------------------->
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public RejectedRequestMessage(Json buffer) {
+	public CreateWalletMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public RejectedRequestMessage(int brokerId, String response) {
+	public CreateWalletMessage(int brokerId, int marketId, String instrument, float quantity) {
 		this.brokerId = brokerId;
-		this.response = response;
+		this.marketId = marketId;
+		this.instrument = instrument;
+		this.quantity = quantity;
 	}
 	
 	//##############################################################################
 	//@METHODS SECTION ------------------------------------------------------------>
 	//##############################################################################
-
+	
 	@Override
 	public int messageId() {
 		return MESSAGE_ID;
@@ -40,19 +46,23 @@ public class RejectedRequestMessage extends NetworkMessage{
 
 	@Override
 	public String getName() {
-		return "RejectedRequestMessage";
+		return "CreateWalletMessage";
 	}
 
 	@Override
 	public void serialize(Json buffer) {
 		buffer.put("BROKERID", this.brokerId);
-		buffer.put("RESPONSE", this.response);
+		buffer.put("MARKETID", this.marketId);
+		buffer.put("INSTRUMENT", this.instrument);
+		buffer.put("QUANTITY", this.quantity);
 	}
 
 	@Override
 	public void deserialize(Json buffer) {
 		this.brokerId = buffer.getInt("BROKERID");
-		this.response = buffer.getString("RESPONSE");
+		this.marketId = buffer.getInt("MARKETID");
+		this.instrument = buffer.getString("INSTRUMENT");
+		this.quantity = buffer.getFloat("QUANTITY");
 	}
 
 	@Override
@@ -61,5 +71,5 @@ public class RejectedRequestMessage extends NetworkMessage{
 		this.serialize(json);
 		return json.toString();
 	}
-	
+
 }

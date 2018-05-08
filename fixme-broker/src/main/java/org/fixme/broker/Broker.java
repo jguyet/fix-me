@@ -1,8 +1,10 @@
 package org.fixme.broker;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.fixme.broker.prompt.BrokerPrompt;
+import org.fixme.broker.prompt.CallBackRequestMessage;
 import org.fixme.broker.socket.SocketBroker;
 import org.fixme.core.LoggingProperties;
 import org.fixme.core.client.SocketChannel;
@@ -22,7 +24,8 @@ public class Broker
 	public static SocketChannel				router = null;
 	public static boolean					stopped = false;
 	public static BrokerPrompt				prompt = null;
-	public static ArrayList<MarketObject>	markets = new ArrayList<MarketObject>();
+	public static Map<String, MarketObject>	markets = new HashMap<String, MarketObject>();
+	public static CallBackRequestMessage	callback = null;
 	
 	public static boolean			initialized_connection = false;
 	
@@ -42,6 +45,7 @@ public class Broker
     	
     	socket.intialize();
     	
+    	try { Thread.sleep(1000); } catch(Exception e) { e.printStackTrace(); }
     	//################
     	//WAIT STOPPED SIG
     	while (stopped == false) {

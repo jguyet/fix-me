@@ -16,13 +16,17 @@ public class BuyOrderMessage extends NetworkMessage {
 	//@VARIABLES SECTION ---------->
 	//##############################
 	
+	public int			brokerId;
+	
+	public int			marketId;
+	
 	public String		instrument;
 	
-	public int			quantity;
-	
-	public int			market;
+	public float		quantity;
 	
 	public float		price;
+	
+	public String		wallet;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
@@ -32,11 +36,13 @@ public class BuyOrderMessage extends NetworkMessage {
 		super(buffer);
 	}
 	
-	public BuyOrderMessage(String instrument, int quantity, int market, float price) {
+	public BuyOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String wallet) {
+		this.brokerId = brokerId;
+		this.marketId = marketId;
 		this.instrument = instrument;
 		this.quantity = quantity;
-		this.market = market;
 		this.price = price;
+		this.wallet = wallet;
 	}
 	
 	//##############################################################################
@@ -50,37 +56,36 @@ public class BuyOrderMessage extends NetworkMessage {
 
 	@Override
 	public String getName() {
-		return "BuyInstrumentMessage";
+		return "BuyOrderMessage";
 	}
 
 	@Override
 	public void serialize(Json buffer) {
 		
+		buffer.put("BROKERID", this.brokerId);
+		buffer.put("MARKETID", this.marketId);
 		buffer.put("INSTRUMENT", this.instrument);
-		buffer.put("QUANTITY", this.quantity + "");
-		buffer.put("MARKET", this.market);
-		buffer.put("PRICE", this.price + "");
+		buffer.put("QUANTITY", this.quantity);
+		buffer.put("PRICE", this.price);
+		buffer.put("WALLET", this.wallet);
 	}
 
 	@Override
 	public void deserialize(Json buffer) {
 		
+		this.brokerId = buffer.getInt("BROKERID");
+		this.marketId = buffer.getInt("MARKETID");
 		this.instrument = buffer.getString("INSTRUMENT");
-		this.quantity = buffer.getInt("QUANTITY");
-		this.market = buffer.getInt("MARKET");
+		this.quantity = buffer.getFloat("QUANTITY");
 		this.price = buffer.getFloat("PRICE");
+		this.wallet = buffer.getString("WALLET");
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("INSTRUMENT=").append(this.instrument).append("|");
-		str.append("QUANTITY=").append(this.quantity).append("|");
-		str.append("MARKET=").append(this.market).append("|");
-		str.append("PRICE=").append(this.price);
-		
-		return str.toString();
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 
 }

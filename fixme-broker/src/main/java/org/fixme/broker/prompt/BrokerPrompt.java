@@ -3,7 +3,12 @@ package org.fixme.broker.prompt;
 import java.util.Scanner;
 
 import org.fixme.broker.Broker;
-import org.fixme.core.protocol.messages.MarketDataRequestMessage;
+import org.fixme.core.client.SocketChannel;
+import org.fixme.core.protocol.NetworkMessage;
+import org.fixme.core.protocol.messages.BuyOrderMessage;
+import org.fixme.core.protocol.messages.CreateWalletMessage;
+import org.fixme.core.protocol.messages.GetWalletContentMessage;
+import org.fixme.core.protocol.messages.SellOrderMessage;
 import org.fixme.core.protocol.types.MarketObject;
 
 public class BrokerPrompt {
@@ -33,16 +38,29 @@ public class BrokerPrompt {
 				display_help();
 			break ;
 		case "markets":
-			for (MarketObject o : Broker.markets) {
-				System.out.println(o.name + " market" + o.marketID);
+			
+			for (MarketObject o : Broker.markets.values()) {
+				System.out.println("{"
+							+ "\"name\": \"" + o.name + "\", "
+							+ "\"marketId\": " + o.marketID + ", "
+							+ "\"last\": " + o.last + ", "
+							+ "\"buy\": " + o.buy + ", "
+							+ "\"sell\": " + o.sell + ""
+							+ "}");
 			}
-//			waitResponse = true;
-//			Broker.router.write(new MarketDataRequestMessage(Broker.router.getUid()));
-//			waitTcpResponse();
 			break ;
-		case "create":
-			createCommand(args);
+		case "buy":
+			buyCommand(args);
 			break ;
+		case "sell":
+			sellCommand(args);
+			break ;
+		case "wallet":
+			getWallet(args);
+			break ;
+		case "createwallet":
+			createWallet(args);
+			break;
 		case "exit":
 			Broker.stopped = true;
 			break ;
@@ -52,11 +70,114 @@ public class BrokerPrompt {
 		}
 	}
 	
-	private void createCommand(String[] args) {
+	private void buyCommand(String[] args) {
 		
-		if (args.length >= 2 && args[1].equalsIgnoreCase("wallet")) {
-			System.out.println("create wallet of " + args[2]);
+		if (args.length < 4) {
+			return ;
 		}
+		
+		MarketObject m = Broker.markets.get(args[1]);
+		
+		String currency = m.name;
+		int marketId = m.marketID;
+		float quantity = Integer.parseInt(args[2]);
+		float price = Integer.parseInt(args[3]);
+		
+		this.waitResponse = true;
+		Broker.callback = new CallBackRequestMessage() {
+
+			@Override
+			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+
+			@Override
+			public void onRejectedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+		};
+		Broker.router.write(new BuyOrderMessage(this.id, marketId, currency, quantity, price));
+		waitTcpResponse();
+	}
+	
+	private void sellCommand(String[] args) {
+		
+		if (args.length < 4) {
+			return ;
+		}
+		
+		MarketObject m = Broker.markets.get(args[1]);
+		
+		String currency = m.name;
+		int marketId = m.marketID;
+		float quantity = Integer.parseInt(args[2]);
+		float price = Integer.parseInt(args[3]);
+		
+		this.waitResponse = true;
+		Broker.callback = new CallBackRequestMessage() {
+
+			@Override
+			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+
+			@Override
+			public void onRejectedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+		};
+		Broker.router.write(new SellOrderMessage(this.id, marketId, currency, quantity, price));
+		waitTcpResponse();
+	}
+	
+	private void getWallet(String[] args) {
+		int marketId = Integer.parseInt(args[1]);
+		String wallet = args[2];
+		this.waitResponse = true;
+		Broker.callback = new CallBackRequestMessage() {
+
+			@Override
+			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+
+			@Override
+			public void onRejectedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+			
+		};
+		Broker.router.write(new GetWalletContentMessage(this.id, marketId, wallet));
+		waitTcpResponse();
+	}
+	
+	private void createWallet(String[] args) {
+		int marketId = Integer.parseInt(args[1]);
+		String instrument = args[2];
+		this.waitResponse = true;
+		Broker.callback = new CallBackRequestMessage() {
+
+			@Override
+			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+
+			@Override
+			public void onRejectedRequest(SocketChannel channel, NetworkMessage message) {
+				System.out.println(message.toString());
+				waitResponse = false;
+			}
+			
+		};
+		Broker.router.write(new CreateWalletMessage(this.id, marketId, instrument));
+		waitTcpResponse();
 	}
 	
 	private void waitTcpResponse() {

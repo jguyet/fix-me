@@ -57,12 +57,8 @@ public class OrderObject extends BaseCollection implements INetworkType {
 	
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("WALLET=").append(this.wallet).append("|");
-		str.append("QUANTITY=").append(this.quantity).append("|");
-		str.append("PRICE=").append(this.price);
-		
-		return str.toString();
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 }

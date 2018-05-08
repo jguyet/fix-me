@@ -57,12 +57,9 @@ public class ExecutedRequestMessage extends NetworkMessage {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("BROKERID=").append(this.brokerId).append("|");
-		str.append("RESPONSE=").append(this.response);
-		
-		return str.toString();
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 
 }

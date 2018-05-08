@@ -12,5 +12,4 @@ public class WalletCollectionDAO extends BasicDAO<WalletObject, ObjectId> {
 	public WalletCollectionDAO( Mongo mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}
-
 }

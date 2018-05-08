@@ -1,6 +1,8 @@
 package org.fixme.broker.socket.handler;
 
+import org.fixme.broker.Broker;
 import org.fixme.broker.prompt.BrokerPrompt;
+import org.fixme.broker.prompt.CallBackRequestMessage;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.ExecutedRequestMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
@@ -31,6 +33,11 @@ public class TransactionBrokerHandler {
 	@MethodMessageHandler(ExecutedRequestMessage.MESSAGE_ID)
 	public static boolean onTransactionMessageExecuted(BrokerPrompt prompt, SocketChannel channel, ExecutedRequestMessage message) {
 		
+		if (Broker.callback != null) {
+			CallBackRequestMessage callback = Broker.callback;
+			Broker.callback = null;
+			callback.onExecutedRequest(channel, message);
+		}
 		return true;
 	}
 	
@@ -43,6 +50,11 @@ public class TransactionBrokerHandler {
 	@MethodMessageHandler(RejectedRequestMessage.MESSAGE_ID)
 	public static boolean onTransactionMessageRejected(BrokerPrompt prompt, SocketChannel channel, RejectedRequestMessage message) {
 		
+		if (Broker.callback != null) {
+			CallBackRequestMessage callback = Broker.callback;
+			Broker.callback = null;
+			callback.onRejectedRequest(channel, message);
+		}
 		return true;
 	}
 }

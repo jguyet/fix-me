@@ -65,11 +65,9 @@ public class MarketDataMessage extends NetworkMessage {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		
-		str.append("BROKER_ID=").append(this.brokerId);
-		
-		return str.toString();
+		Json json = new Json();
+		this.serialize(json);
+		return json.toString();
 	}
 
 }
