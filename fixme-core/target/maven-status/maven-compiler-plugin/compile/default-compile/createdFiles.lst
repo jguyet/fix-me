@@ -3,12 +3,12 @@ org/fixme/core/utils/Json$Null.class
 org/fixme/core/client/SocketChannel.class
 org/fixme/core/FixmeSocketChannelManager$2.class
 org/fixme/core/FixmeSocketServerChannelManager$2.class
-org/fixme/core/protocol/types/InstrumentObject.class
 org/fixme/core/utils/Json$1.class
 org/fixme/core/database/MorphiaSilentLoggerFactory.class
 org/fixme/core/LoggingProperties.class
 org/fixme/core/protocol/NetworkProtocolMessage.class
 org/fixme/core/IASynchronousSocketChannelHandler.class
+org/fixme/core/protocol/types/OrderObject.class
 org/fixme/core/validation/Validator.class
 org/fixme/core/protocol/messages/MarketDataRequestMessage.class
 org/fixme/core/database/collections/MarketCollectionDAO.class

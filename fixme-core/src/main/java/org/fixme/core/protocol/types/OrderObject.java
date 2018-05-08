@@ -10,58 +10,30 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Property;
 
 @Entity
-public class InstrumentObject extends BaseCollection implements INetworkType {
+public class OrderObject extends BaseCollection implements INetworkType {
 	
 	//##############################
 	//@PRIVATE VARIABLES SECTION -->
 	//##############################
 	
 	@Property("wallet")
-	private String	wallet;
+	public String	wallet;
 	
 	@Property("quantity")
-	private int		quantity;
+	public float	quantity;
 	
 	@Property("price")
-	private int		price;
+	public float	price;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public InstrumentObject() { }
+	public OrderObject() { }
 	
-	public InstrumentObject(String wallet, int quantity, int price) {
+	public OrderObject(String wallet, float quantity, float price) {
 		this.wallet = wallet;
 		this.quantity = quantity;
-		this.price = price;
-	}
-	
-	//##############################################################################
-	//@GETTER SETTER SECTION ------------------------------------------------------>
-	//##############################################################################
-
-	public String getWallet() {
-		return wallet;
-	}
-
-	public void setWallet(String wallet) {
-		this.wallet = wallet;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
 		this.price = price;
 	}
 	

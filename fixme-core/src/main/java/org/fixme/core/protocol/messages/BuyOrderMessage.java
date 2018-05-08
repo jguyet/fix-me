@@ -7,8 +7,8 @@ import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.utils.Json;
 
-@AnnotationMessageID(BuyMessage.MESSAGE_ID)
-public class BuyMessage extends NetworkMessage {
+@AnnotationMessageID(BuyOrderMessage.MESSAGE_ID)
+public class BuyOrderMessage extends NetworkMessage {
 
 	public static final int MESSAGE_ID = 1002;
 
@@ -16,30 +16,26 @@ public class BuyMessage extends NetworkMessage {
 	//@VARIABLES SECTION ---------->
 	//##############################
 	
-	@Size(min=3)
 	public String		instrument;
 	
-	@Min(value=1)
 	public int			quantity;
 	
-	@Size(min=3, max=3)
-	public String		marketName;
+	public int			market;
 	
-	@Min(value=1)
-	public int			price;
+	public float		price;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public BuyMessage(Json buffer) {
+	public BuyOrderMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public BuyMessage(String instrument, int quantity, String marketName, int price) {
+	public BuyOrderMessage(String instrument, int quantity, int market, float price) {
 		this.instrument = instrument;
 		this.quantity = quantity;
-		this.marketName = marketName;
+		this.market = market;
 		this.price = price;
 	}
 	
@@ -62,7 +58,7 @@ public class BuyMessage extends NetworkMessage {
 		
 		buffer.put("INSTRUMENT", this.instrument);
 		buffer.put("QUANTITY", this.quantity + "");
-		buffer.put("MARKET", this.marketName);
+		buffer.put("MARKET", this.market);
 		buffer.put("PRICE", this.price + "");
 	}
 
@@ -71,8 +67,8 @@ public class BuyMessage extends NetworkMessage {
 		
 		this.instrument = buffer.getString("INSTRUMENT");
 		this.quantity = buffer.getInt("QUANTITY");
-		this.marketName = buffer.getString("MARKET");
-		this.price = buffer.getInt("PRICE");
+		this.market = buffer.getInt("MARKET");
+		this.price = buffer.getFloat("PRICE");
 	}
 
 	@Override
@@ -81,7 +77,7 @@ public class BuyMessage extends NetworkMessage {
 		
 		str.append("INSTRUMENT=").append(this.instrument).append("|");
 		str.append("QUANTITY=").append(this.quantity).append("|");
-		str.append("MARKET=").append(this.marketName).append("|");
+		str.append("MARKET=").append(this.market).append("|");
 		str.append("PRICE=").append(this.price);
 		
 		return str.toString();

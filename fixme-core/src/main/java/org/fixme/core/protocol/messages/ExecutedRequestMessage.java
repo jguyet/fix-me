@@ -14,6 +14,8 @@ public class ExecutedRequestMessage extends NetworkMessage {
 	//##############################
 	public int brokerId;
 	
+	public String response;
+	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
@@ -22,8 +24,9 @@ public class ExecutedRequestMessage extends NetworkMessage {
 		super(buffer);
 	}
 	
-	public ExecutedRequestMessage(int brokerId) {
+	public ExecutedRequestMessage(int brokerId, String response) {
 		this.brokerId = brokerId;
+		this.response = response;
 	}
 	
 	//##############################################################################
@@ -43,18 +46,21 @@ public class ExecutedRequestMessage extends NetworkMessage {
 	@Override
 	public void serialize(Json buffer) {
 		buffer.put("BROKERID", this.brokerId);
+		buffer.put("RESPONSE", this.response);
 	}
 
 	@Override
 	public void deserialize(Json buffer) {
 		this.brokerId = buffer.getInt("BROKERID");
+		this.response = buffer.getString("RESPONSE");
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("BROKERID=").append(this.brokerId);
+		str.append("BROKERID=").append(this.brokerId).append("|");
+		str.append("RESPONSE=").append(this.response);
 		
 		return str.toString();
 	}

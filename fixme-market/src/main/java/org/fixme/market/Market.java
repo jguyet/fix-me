@@ -3,7 +3,7 @@ package org.fixme.market;
 import org.bson.types.ObjectId;
 import org.fixme.core.LoggingProperties;
 import org.fixme.core.database.Database;
-import org.fixme.core.protocol.types.InstrumentObject;
+import org.fixme.core.protocol.types.OrderObject;
 import org.fixme.core.protocol.types.MarketObject;
 import org.fixme.market.socket.SocketMarket;
 

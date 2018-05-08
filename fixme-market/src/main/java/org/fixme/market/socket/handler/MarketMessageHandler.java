@@ -3,11 +3,11 @@ package org.fixme.market.socket.handler;
 import java.util.List;
 
 import org.fixme.core.client.SocketChannel;
-import org.fixme.core.protocol.messages.BuyMessage;
+import org.fixme.core.protocol.messages.BuyOrderMessage;
 import org.fixme.core.protocol.messages.MarketDataMessage;
 import org.fixme.core.protocol.messages.MarketDataRequestMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
-import org.fixme.core.protocol.messages.SellMessage;
+import org.fixme.core.protocol.messages.SellOrderMessage;
 import org.fixme.core.protocol.types.MarketObject;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
 import org.fixme.core.reflection.handler.MethodMessageHandler;
@@ -31,14 +31,14 @@ public class MarketMessageHandler {
 		return true;
 	}
 	
-	@MethodMessageHandler(BuyMessage.MESSAGE_ID)
-	public static boolean buyInstrumentMessageHandler(SocketChannel channel, BuyMessage message) {
+	@MethodMessageHandler(BuyOrderMessage.MESSAGE_ID)
+	public static boolean buyInstrumentMessageHandler(SocketChannel channel, BuyOrderMessage message) {
 		
 		return true;
 	}
 	
-	@MethodMessageHandler(SellMessage.MESSAGE_ID)
-	public static boolean sellInstrumentMessageHandler(SocketChannel channel, SellMessage message) {
+	@MethodMessageHandler(SellOrderMessage.MESSAGE_ID)
+	public static boolean sellInstrumentMessageHandler(SocketChannel channel, SellOrderMessage message) {
 		
 		return true;
 	}

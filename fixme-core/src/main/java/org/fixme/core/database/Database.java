@@ -4,7 +4,7 @@ import org.fixme.core.LoggingProperties;
 import org.fixme.core.database.collections.InstrumentCollectionDAO;
 import org.fixme.core.database.collections.MarketCollectionDAO;
 import org.fixme.core.database.collections.WalletCollectionDAO;
-import org.fixme.core.protocol.types.InstrumentObject;
+import org.fixme.core.protocol.types.OrderObject;
 import org.fixme.core.protocol.types.MarketObject;
 import org.fixme.core.protocol.types.WalletObject;
 import org.slf4j.LoggerFactory;
@@ -98,7 +98,7 @@ public class Database {
     	}
     	Morphia morphia = new Morphia();
     	
-    	morphia.map(InstrumentObject.class);
+    	morphia.map(OrderObject.class);
     	instrumentCollection = new InstrumentCollectionDAO(this.mongoClient, morphia, this.databaseName);
     	
     	morphia.map(MarketObject.class);

@@ -5,9 +5,9 @@ import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
-import org.fixme.router.Route;
 import org.fixme.router.RouterProperties;
-import org.fixme.router.RoutingTable;
+import org.fixme.router.routing.Route;
+import org.fixme.router.routing.RoutingTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

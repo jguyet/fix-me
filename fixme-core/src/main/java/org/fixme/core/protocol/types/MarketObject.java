@@ -15,16 +15,24 @@ import com.google.code.morphia.annotations.Property;
 public class MarketObject extends BaseCollection implements INetworkType {
 	
 	@Property("name")
-	private String			name;
-	
-	public int				marketID = -1;
+	public String			name;
 	
 	@Property("bids")
-	private List<ObjectId>	bids;
+	public List<ObjectId>	bids = new ArrayList<ObjectId>();
 	
 	@Property("asks")
-	private List<ObjectId>	asks;
+	public List<ObjectId>	asks = new ArrayList<ObjectId>();
 	
+	@Property("last")
+	public float			last = 0.0f;
+	
+	@Property("buy")
+	public float			buy = 0.0f;
+	
+	@Property("sell")
+	public float			sell = 0.0f;
+	
+	public int				marketID = -1;
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
@@ -33,48 +41,24 @@ public class MarketObject extends BaseCollection implements INetworkType {
 	
 	public MarketObject(String name) {
 		this.name = name;
-		this.bids = new ArrayList<ObjectId>();
-		this.asks = new ArrayList<ObjectId>();
 	}
 	
 	//##############################################################################
 	//@GETTER SETTER SECTION ------------------------------------------------------>
 	//##############################################################################
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<ObjectId> getBids() {
-		if (bids == null)
-			this.bids = new ArrayList<ObjectId>();
-		return bids;
-	}
-
-	public void setBids(List<ObjectId> bids) {
-		this.bids = bids;
+	
+	public void addSellOrder(OrderObject i) {
+		if (i.price < this.sell) {
+			this.sell = i.price;
+		}
+		this.bids.add(i.getId());
 	}
 	
-	public void add_sell_Instrument(InstrumentObject i) {
-		this.getBids().add(i.getId());
-	}
-
-	public List<ObjectId> getAsks() {
-		if (this.asks == null)
-			this.asks = new ArrayList<ObjectId>();
-		return asks;
-	}
-
-	public void setAsks(List<ObjectId> asks) {
-		this.asks = asks;
-	}
-	
-	public void add_buy_Instrument(InstrumentObject i) {
-		this.getAsks().add(i.getId());
+	public void addBuyOrder(OrderObject i) {
+		if (i.price > this.buy) {
+			this.buy = i.price;
+		}
+		this.asks.add(i.getId());
 	}
 	
 	//##############################################################################
@@ -84,38 +68,16 @@ public class MarketObject extends BaseCollection implements INetworkType {
 	@Override
 	public void serialize(Json buffer) {
 		buffer.put("NAME", this.name);
-		
-//		String sales = "";
-//		for (ObjectId objId : this.getBids()) {
-//			if (sales.length() != 0)
-//				sales += ";";
-//			sales += objId.toHexString();
-//		}
-//		buffer.put("SALES_LIST", sales);
-//		String purchases = "";
-//		for (ObjectId objId : this.getAsks()) {
-//			if (purchases.length() != 0)
-//				purchases += ";";
-//			purchases += objId.toHexString();
-//		}
-//		buffer.put("PURCHASE_LIST", purchases);
+		buffer.put("LAST", this.last);
+		buffer.put("BUY", this.buy);
+		buffer.put("SELL", this.sell);
 	}
 
 	@Override
 	public void deserialize(Json buffer) {
 		this.name = buffer.getString("NAME");
-		
-//		String sales = buffer.get("BIDS");
-		this.bids = new ArrayList<ObjectId>();
-//		for (String s : sales.split("\\;")) {
-//			this.bids.add(new ObjectId(s));
-//		}
-		
-//		String purchases = buffer.get("ASKS");
-		this.asks = new ArrayList<ObjectId>();
-//		for (String s : purchases.split("\\;")) {
-//			this.asks.add(new ObjectId(s));
-//		}
-		
+		this.last = buffer.getFloat("LAST");
+		this.buy = buffer.getFloat("BUY");
+		this.sell = buffer.getFloat("SELL");
 	}
 }

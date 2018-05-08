@@ -1,4 +1,4 @@
-package org.fixme.router;
+package org.fixme.router.routing;
 
 import java.util.HashMap;
 import java.util.Map;

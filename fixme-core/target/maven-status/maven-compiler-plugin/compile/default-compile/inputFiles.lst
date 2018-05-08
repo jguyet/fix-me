@@ -5,6 +5,7 @@
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/utils/CheckSum.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/InstrumentCollectionDAO.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/types/OrderObject.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/validation/Validator.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/Database.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/MarketDataRequestMessage.java
@@ -13,7 +14,6 @@
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkMessageFactory.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/SellMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/INetworkType.java
-/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/types/InstrumentObject.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/FixmeSocketChannelManager.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/BaseCollection.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/AnnotationMessageID.java

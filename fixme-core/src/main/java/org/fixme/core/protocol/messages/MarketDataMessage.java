@@ -45,7 +45,6 @@ public class MarketDataMessage extends NetworkMessage {
 			market_objects[i].serialize(j);
 			buffer.append("MARKET_LIST", j.getJSONObject());
 		}
-		//System.out.println("->" + buffer.toString());
 	}
 
 	@Override
@@ -62,7 +61,6 @@ public class MarketDataMessage extends NetworkMessage {
 			m.deserialize(j);
 			market_objects[i] = m;
 		}
-		System.out.println("->" + buffer.toString());
 	}
 
 	@Override

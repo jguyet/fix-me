@@ -34,7 +34,7 @@ public class BrokerPrompt {
 			break ;
 		case "markets":
 			for (MarketObject o : Broker.markets) {
-				System.out.println(o.getName() + " market" + o.marketID);
+				System.out.println(o.name + " market" + o.marketID);
 			}
 //			waitResponse = true;
 //			Broker.router.write(new MarketDataRequestMessage(Broker.router.getUid()));
