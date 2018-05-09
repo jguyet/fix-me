@@ -3,7 +3,9 @@ package org.fixme.core.database;
 import org.fixme.core.LoggingProperties;
 import org.fixme.core.database.collections.InstrumentCollectionDAO;
 import org.fixme.core.database.collections.MarketCollectionDAO;
+import org.fixme.core.database.collections.OrderCollectionDAO;
 import org.fixme.core.database.collections.WalletCollectionDAO;
+import org.fixme.core.protocol.types.InstrumentObject;
 import org.fixme.core.protocol.types.MarketObject;
 import org.fixme.core.protocol.types.OrderObject;
 import org.fixme.core.protocol.types.WalletObject;
@@ -50,9 +52,10 @@ public class Database {
     private MongoDatabase				mongoDB;
     
     //Collections
-    private InstrumentCollectionDAO		instrumentCollection;
+    private OrderCollectionDAO			orderCollection;
     private MarketCollectionDAO			marketCollection;
     private WalletCollectionDAO			walletCollection;
+    private InstrumentCollectionDAO		instrumentCollection;
     
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
@@ -99,13 +102,16 @@ public class Database {
     	Morphia morphia = new Morphia();
     	
     	morphia.map(OrderObject.class);
-    	instrumentCollection = new InstrumentCollectionDAO(this.mongoClient, morphia, this.databaseName);
+    	orderCollection = new OrderCollectionDAO(this.mongoClient, morphia, this.databaseName);
     	
     	morphia.map(MarketObject.class);
     	marketCollection = new MarketCollectionDAO(this.mongoClient, morphia, this.databaseName);
     	
     	morphia.map(WalletObject.class);
     	walletCollection = new WalletCollectionDAO(this.mongoClient, morphia, this.databaseName);
+    	
+    	morphia.map(InstrumentObject.class);
+    	instrumentCollection = new InstrumentCollectionDAO(this.mongoClient, morphia, this.databaseName);
     	
     	logger.info("MongoCollections builded");
     }
@@ -123,8 +129,8 @@ public class Database {
     	return mongoDB;
     }
 
-	public InstrumentCollectionDAO getInstrumentCollection() {
-		return instrumentCollection;
+	public OrderCollectionDAO getOrderCollection() {
+		return orderCollection;
 	}
 
 	public MarketCollectionDAO getMarketCollection() {
@@ -133,5 +139,9 @@ public class Database {
 	
 	public WalletCollectionDAO getWalletCollection() {
 		return walletCollection;
+	}
+	
+	public InstrumentCollectionDAO getInstrumentCollection() {
+		return instrumentCollection;
 	}
 }

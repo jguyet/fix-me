@@ -28,7 +28,6 @@ public class StartConnectionHandler {
 	public static boolean attributeRouterUniqueIdentifiantMessageHandler(BrokerPrompt prompt, SocketChannel ch, AttributeRouterUniqueIdentifiantMessage message) {
 		ch.setUid(message.id);
 		prompt.setUid(message.id);
-		ch.write(new MarketDataRequestMessage(ch.getUid()));
 		return true;
 	}
 }

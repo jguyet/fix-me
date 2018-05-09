@@ -4,4 +4,6 @@ org/fixme/market/Market.class
 org/fixme/market/socket/handler/MarketMessageHandler.class
 org/fixme/market/socket/SocketMarketMessageHandlerFactory.class
 org/fixme/market/MarketProperties.class
+org/fixme/market/Seed.class
 org/fixme/market/Market$1.class
+org/fixme/market/MarketOrderTasker.class

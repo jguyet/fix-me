@@ -26,7 +26,9 @@ public class BuyOrderMessage extends NetworkMessage {
 	
 	public float		price;
 	
-	public String		wallet;
+	public String		walletBuyer;
+	
+	public String		walletSeller;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
@@ -36,13 +38,14 @@ public class BuyOrderMessage extends NetworkMessage {
 		super(buffer);
 	}
 	
-	public BuyOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String wallet) {
+	public BuyOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String walletBuyer, String walletSeller) {
 		this.brokerId = brokerId;
 		this.marketId = marketId;
 		this.instrument = instrument;
 		this.quantity = quantity;
 		this.price = price;
-		this.wallet = wallet;
+		this.walletBuyer = walletBuyer;
+		this.walletSeller = walletSeller;
 	}
 	
 	//##############################################################################
@@ -67,7 +70,8 @@ public class BuyOrderMessage extends NetworkMessage {
 		buffer.put("INSTRUMENT", this.instrument);
 		buffer.put("QUANTITY", this.quantity);
 		buffer.put("PRICE", this.price);
-		buffer.put("WALLET", this.wallet);
+		buffer.put("WALLET_BUYER", this.walletBuyer);
+		buffer.put("WALLET_SELLER", this.walletSeller);
 	}
 
 	@Override
@@ -78,7 +82,8 @@ public class BuyOrderMessage extends NetworkMessage {
 		this.instrument = buffer.getString("INSTRUMENT");
 		this.quantity = buffer.getFloat("QUANTITY");
 		this.price = buffer.getFloat("PRICE");
-		this.wallet = buffer.getString("WALLET");
+		this.walletBuyer = buffer.getString("WALLET_BUYER");
+		this.walletSeller = buffer.getString("WALLET_SELLER");
 	}
 
 	@Override

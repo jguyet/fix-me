@@ -18,6 +18,11 @@ public class MarketInformationsHandler {
 		for (int i = 0; i < message.market_objects.length; i++) {
 			Broker.markets.put(message.market_objects[i].name, message.market_objects[i]);
 		}
+		if (Broker.callback != null) {
+			CallBackRequestMessage callback = Broker.callback;
+			Broker.callback = null;
+			callback.onExecutedRequest(ch, message);
+		}
 		return true;
 	}
 	

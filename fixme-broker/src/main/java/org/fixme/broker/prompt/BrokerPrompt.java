@@ -1,5 +1,6 @@
 package org.fixme.broker.prompt;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.fixme.broker.Broker;
@@ -8,6 +9,7 @@ import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.messages.BuyOrderMessage;
 import org.fixme.core.protocol.messages.CreateWalletMessage;
 import org.fixme.core.protocol.messages.GetWalletContentMessage;
+import org.fixme.core.protocol.messages.MarketDataRequestMessage;
 import org.fixme.core.protocol.messages.SellOrderMessage;
 import org.fixme.core.protocol.types.MarketObject;
 
@@ -38,16 +40,8 @@ public class BrokerPrompt {
 				display_help();
 			break ;
 		case "markets":
-			
-			for (MarketObject o : Broker.markets.values()) {
-				System.out.println("{"
-							+ "\"name\": \"" + o.name + "\", "
-							+ "\"marketId\": " + o.marketID + ", "
-							+ "\"last\": " + o.last + ", "
-							+ "\"buy\": " + o.buy + ", "
-							+ "\"sell\": " + o.sell + ""
-							+ "}");
-			}
+		case "tradelist":
+			getMarkets(args);
 			break ;
 		case "buy":
 			buyCommand(args);
@@ -58,7 +52,7 @@ public class BrokerPrompt {
 		case "wallet":
 			getWallet(args);
 			break ;
-		case "createwallet":
+		case "generate":
 			createWallet(args);
 			break;
 		case "exit":
@@ -70,18 +64,45 @@ public class BrokerPrompt {
 		}
 	}
 	
+	private void getMarkets(String[] args) {
+		this.waitResponse = true;
+		Broker.callback = new CallBackRequestMessage() {
+
+			@Override
+			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
+				waitResponse = false;
+			}
+
+			@Override
+			public void onRejectedRequest(SocketChannel channel, NetworkMessage message) {
+				waitResponse = false;
+			}
+		};
+		Broker.router.write(new MarketDataRequestMessage(this.id));
+		waitTcpResponse();
+		for (MarketObject o : Broker.markets.values()) {
+			System.out.println("{"
+						+ "\"name\": \"" + o.name + "\", "
+						+ "\"marketId\": " + o.marketID + ", "
+						+ "\"last\": " + o.last + ", "
+						+ "\"buy\": " + o.buy + ", "
+						+ "\"sell\": " + o.sell + ""
+						+ "}");
+		}
+	}
+	
 	private void buyCommand(String[] args) {
 		
 		if (args.length < 4) {
 			return ;
 		}
-		
-		MarketObject m = Broker.markets.get(args[1]);
-		
-		String currency = m.name;
-		int marketId = m.marketID;
-		float quantity = Integer.parseInt(args[2]);
-		float price = Integer.parseInt(args[3]);
+		//1 ETH_BTC 10 945 WALLET_BUYER WALLET_SELLER
+		int marketId = Integer.parseInt(args[1]);
+		String instrument = args[2];
+		float quantity = Float.parseFloat(args[3]);
+		float price = Float.parseFloat(args[4]);
+		String walleBuyer = args[5];
+		String walleSeller = args[6];
 		
 		this.waitResponse = true;
 		Broker.callback = new CallBackRequestMessage() {
@@ -98,7 +119,7 @@ public class BrokerPrompt {
 				waitResponse = false;
 			}
 		};
-		Broker.router.write(new BuyOrderMessage(this.id, marketId, currency, quantity, price));
+		Broker.router.write(new BuyOrderMessage(this.id, marketId, instrument, quantity, price, walleBuyer, walleSeller));
 		waitTcpResponse();
 	}
 	
@@ -107,13 +128,14 @@ public class BrokerPrompt {
 		if (args.length < 4) {
 			return ;
 		}
+		//1 BTC_ETH 10 945 WALLET_SELLER WALLET_BUYER
 		
-		MarketObject m = Broker.markets.get(args[1]);
-		
-		String currency = m.name;
-		int marketId = m.marketID;
-		float quantity = Integer.parseInt(args[2]);
-		float price = Integer.parseInt(args[3]);
+		int marketId = Integer.parseInt(args[1]);
+		String instrument = args[2];
+		float quantity = Float.parseFloat(args[3]);
+		float price = Float.parseFloat(args[4]);
+		String walleSeller = args[5];
+		String walleBuyer = args[6];
 		
 		this.waitResponse = true;
 		Broker.callback = new CallBackRequestMessage() {
@@ -130,7 +152,7 @@ public class BrokerPrompt {
 				waitResponse = false;
 			}
 		};
-		Broker.router.write(new SellOrderMessage(this.id, marketId, currency, quantity, price));
+		Broker.router.write(new SellOrderMessage(this.id, marketId, instrument, quantity, price, walleSeller, walleBuyer));
 		waitTcpResponse();
 	}
 	
@@ -158,8 +180,11 @@ public class BrokerPrompt {
 	}
 	
 	private void createWallet(String[] args) {
+		//generate 1 ETH 10
 		int marketId = Integer.parseInt(args[1]);
 		String instrument = args[2];
+		int quantity = Integer.parseInt(args[3]);
+		
 		this.waitResponse = true;
 		Broker.callback = new CallBackRequestMessage() {
 
@@ -176,7 +201,7 @@ public class BrokerPrompt {
 			}
 			
 		};
-		Broker.router.write(new CreateWalletMessage(this.id, marketId, instrument));
+		Broker.router.write(new CreateWalletMessage(this.id, marketId, instrument, quantity));
 		waitTcpResponse();
 	}
 	

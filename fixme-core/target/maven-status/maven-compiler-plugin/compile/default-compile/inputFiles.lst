@@ -14,6 +14,7 @@
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkMessageFactory.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/INetworkType.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/NewWalletMessage.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/types/InstrumentObject.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/FixmeSocketChannelManager.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/SellOrderMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/BaseCollection.java
@@ -29,6 +30,7 @@
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/FixmeSocketServerChannelManager.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/RejectedRequestMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkMessageHeader.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/OrderCollectionDAO.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/types/MarketObject.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/WalletCollectionDAO.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/AbstractMongoCollection.java
