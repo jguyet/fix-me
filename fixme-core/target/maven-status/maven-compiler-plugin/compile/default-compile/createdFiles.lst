@@ -5,6 +5,7 @@ org/fixme/core/FixmeSocketServerChannelManager$2.class
 org/fixme/core/database/MorphiaSilentLoggerFactory.class
 org/fixme/core/LoggingProperties.class
 org/fixme/core/protocol/messages/NewWalletMessage.class
+org/fixme/core/utils/Utils.class
 org/fixme/core/protocol/types/OrderObject.class
 org/fixme/core/protocol/messages/MarketDataRequestMessage.class
 org/fixme/core/protocol/messages/WalletContentMessage.class
@@ -28,6 +29,7 @@ org/fixme/core/database/Database.class
 org/fixme/core/protocol/NetworkMessage.class
 org/fixme/core/protocol/messages/ExecutedRequestMessage.class
 org/fixme/core/FixmeSocketChannelManager.class
+org/fixme/core/protocol/messages/OrdersMessage.class
 org/fixme/core/protocol/messages/BuyOrderMessage.class
 org/fixme/core/utils/Json$Null.class
 org/fixme/core/protocol/types/InstrumentObject.class
@@ -46,5 +48,6 @@ org/fixme/core/database/collections/InstrumentCollectionDAO.class
 org/fixme/core/FixmeSocketServerChannelManager$3.class
 org/fixme/core/reflection/handler/ClassMessageHandler.class
 org/fixme/core/FixmeSocketServerChannelManager.class
+org/fixme/core/protocol/messages/GetOrdersMessage.class
 org/fixme/core/database/collections/BaseCollection.class
 org/fixme/core/database/MorphiaSilentLoggerFactory$JDKSilentLogger.class

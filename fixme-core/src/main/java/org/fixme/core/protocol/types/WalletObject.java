@@ -48,7 +48,7 @@ public class WalletObject extends BaseCollection implements INetworkType {
 		public void deserialize(Json buffer) {
 			this.wallet = buffer.getString("WALLET");
 			this.instrument = buffer.getString("INSTRUMENT");
-			this.quantity = buffer.getInt("QUANTITY");
+			this.quantity = buffer.getFloat("QUANTITY");
 		}
 		
 		@Override

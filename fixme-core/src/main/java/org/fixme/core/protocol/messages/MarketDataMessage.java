@@ -39,7 +39,7 @@ public class MarketDataMessage extends NetworkMessage {
 	public void serialize(Json buffer) {
 		buffer.put("BROKER_ID", this.brokerId);
 		buffer.put("MARKET_ID", this.marketId);
-		
+		buffer.put("MARKET_LIST", new JSONArray());
 		for (int i = 0; i < market_objects.length; i++) {
 			Json j = new Json();
 			market_objects[i].serialize(j);
@@ -51,8 +51,8 @@ public class MarketDataMessage extends NetworkMessage {
 	public void deserialize(Json buffer) {
 		this.brokerId = buffer.getInt("BROKER_ID");
 		this.marketId = buffer.getInt("MARKET_ID");
-		JSONArray array = buffer.getJSONArray("MARKET_LIST");
 		
+		JSONArray array = buffer.getJSONArray("MARKET_LIST");
 		market_objects = new MarketObject[array.length()];
 		for (int i = 0; i < array.length(); i++) {
 			Json j = new Json(array.getJSONObject(i));
@@ -67,6 +67,7 @@ public class MarketDataMessage extends NetworkMessage {
 	public String toString() {
 		Json json = new Json();
 		this.serialize(json);
+		json.put("CLASS", this.getName());
 		return json.toString();
 	}
 

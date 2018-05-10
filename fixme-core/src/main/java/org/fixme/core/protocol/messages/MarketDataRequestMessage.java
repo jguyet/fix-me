@@ -43,6 +43,7 @@ public class MarketDataRequestMessage extends NetworkMessage {
 	public String toString() {
 		Json json = new Json();
 		this.serialize(json);
+		json.put("CLASS", this.getName());
 		return json.toString();
 	}
 

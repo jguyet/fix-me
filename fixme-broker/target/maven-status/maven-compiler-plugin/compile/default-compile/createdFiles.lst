@@ -6,6 +6,7 @@ org/fixme/broker/prompt/BrokerPrompt$3.class
 org/fixme/broker/socket/handler/TransactionBrokerHandler.class
 org/fixme/broker/prompt/BrokerPrompt$CommandLineGetter.class
 org/fixme/broker/BrokerProperties.class
+org/fixme/broker/prompt/BrokerPrompt$6.class
 org/fixme/broker/prompt/BrokerPrompt$2.class
 org/fixme/broker/prompt/BrokerPrompt$5.class
 org/fixme/broker/socket/SocketBrokerMessageHandlerFactory.class

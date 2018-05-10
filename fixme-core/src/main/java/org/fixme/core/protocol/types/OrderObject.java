@@ -19,8 +19,11 @@ public class OrderObject extends BaseCollection implements INetworkType {
 	@Property("order_id")
 	public String	order_id;
 	
-	@Property("wallet")
-	public String	wallet;
+	@Property("wallet_from")
+	public String	wallet_from;
+	
+	@Property("wallet_to")
+	public String	wallet_to;
 	
 	@Property("currency")
 	public String	currency;
@@ -40,10 +43,11 @@ public class OrderObject extends BaseCollection implements INetworkType {
 	
 	public OrderObject() { }
 	
-	public OrderObject(String order_id, String type, String wallet, String currency, float quantity, float price) {
+	public OrderObject(String order_id, String type, String wallet_from, String wallet_to, String currency, float quantity, float price) {
 		this.order_id = order_id;
 		this.type = type;
-		this.wallet = wallet;
+		this.wallet_from = wallet_from;
+		this.wallet_to = wallet_to;
 		this.currency = currency;
 		this.quantity = quantity;
 		this.price = price;
@@ -57,7 +61,6 @@ public class OrderObject extends BaseCollection implements INetworkType {
 	public void serialize(Json buffer) {
 		buffer.put("ORDERID", this.order_id);
 		buffer.put("TYPE", this.type);
-		buffer.put("WALLET", this.wallet);
 		buffer.put("CURRENCY", this.currency);
 		buffer.put("QUANTITY", this.quantity);
 		buffer.put("PRICE", this.price);
@@ -67,10 +70,9 @@ public class OrderObject extends BaseCollection implements INetworkType {
 	public void deserialize(Json buffer) {
 		this.order_id = buffer.getString("ORDERID");
 		this.type = buffer.getString("TYPE");
-		this.wallet = buffer.getString("WALLET");
 		this.currency = buffer.getString("CURRENCY");
-		this.quantity = buffer.getInt("QUANTITY");
-		this.price = buffer.getInt("PRICE");
+		this.quantity = buffer.getFloat("QUANTITY");
+		this.price = buffer.getFloat("PRICE");
 	}
 	
 	@Override

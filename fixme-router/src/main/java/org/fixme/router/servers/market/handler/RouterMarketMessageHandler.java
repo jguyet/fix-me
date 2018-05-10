@@ -4,6 +4,7 @@ import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.ExecutedRequestMessage;
 import org.fixme.core.protocol.messages.MarketDataMessage;
 import org.fixme.core.protocol.messages.NewWalletMessage;
+import org.fixme.core.protocol.messages.OrdersMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
 import org.fixme.core.protocol.messages.WalletContentMessage;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
@@ -60,6 +61,17 @@ public class RouterMarketMessageHandler {
 	
 	@MethodMessageHandler(NewWalletMessage.MESSAGE_ID)
 	public static boolean NewWalletMessageHandler(SocketChannel ch, NewWalletMessage message) {
+		Route r = BrokerServerHandler.brokerRoutingTable.searchRoute(message.brokerId);
+		
+		if (r == null) {
+			return true ;
+		}
+		r.dest.write(message);
+		return true;
+	}
+	
+	@MethodMessageHandler(OrdersMessage.MESSAGE_ID)
+	public static boolean OrdersMessageHandler(SocketChannel client, OrdersMessage message) {
 		Route r = BrokerServerHandler.brokerRoutingTable.searchRoute(message.brokerId);
 		
 		if (r == null) {

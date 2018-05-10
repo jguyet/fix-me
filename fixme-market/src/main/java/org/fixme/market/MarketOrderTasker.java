@@ -27,7 +27,11 @@ public class MarketOrderTasker implements Runnable {
 	public void run() {
 		
 		while (Market.stopped == false) {
-			checkDatabaseOrders();
+			try  {
+				checkDatabaseOrders();
+			} catch (Exception e) {
+				
+			}
 			try { Thread.sleep(100); } catch (Exception e) {}
 		}
 	}
@@ -61,6 +65,22 @@ public class MarketOrderTasker implements Runnable {
 	    QueryResults<OrderObject> buyresult = database.getOrderCollection().find(buyquery);
 	    List<OrderObject> bids = buyresult.asList();
 	    
+	    if (bids.size() > 0 && market.buy != bids.get(0).price) {
+	    	market.buy = bids.get(0).price;
+	    	Market.database.getMarketCollection().save(market);
+	    } else if (bids.size() == 0 && market.buy != 0) {
+	    	market.buy = 0;
+	    	Market.database.getMarketCollection().save(market);
+	    }
+	    
+	    if (asks.size() > 0 && market.sell != asks.get(0).price) {
+	    	market.sell = asks.get(0).price;
+	    	Market.database.getMarketCollection().save(market);
+	    } else if (asks.size() == 0 && market.sell != 0) {
+	    	market.sell = 0;
+	    	Market.database.getMarketCollection().save(market);
+	    }
+	    
 	    if (asks.size() == 0 && bids.size() == 0)
 	    	return ;
 	    
@@ -68,22 +88,13 @@ public class MarketOrderTasker implements Runnable {
 	}
 	
 	private void buyOrders(MarketObject market, List<OrderObject> bids, List<OrderObject> asks) {
-		System.out.println("MARKET " + market);
-	    System.out.println("ASK -> ");
-	    for (OrderObject o : asks) {
-	    	System.out.println(o.toString());
-	    }
-	    System.out.println("BID -> ");
-	    for (OrderObject o : bids) {
-	    	System.out.println(o.toString());
-	    }
 	    for (OrderObject buyOrder : bids) {
 	    	
 	    	for (OrderObject sellOrder : asks) {
-	    		if (buyOrder.quantity == 0)
+	    		if (buyOrder.quantity <= 0)
 	    			break ;
 	    		if (sellOrder.price > buyOrder.price)
-	    			return ;
+	    			break ;
 	    		float price = sellOrder.price;
 	    		float quantity = sellOrder.quantity;
 	    		if (sellOrder.quantity > buyOrder.quantity) {
@@ -92,24 +103,40 @@ public class MarketOrderTasker implements Runnable {
 	    		//Ask : Q(0.5) PU(0.002) = 0.001 price
 	    		//Bid : Q(0.5) PU(0.002) = 0.001 price
 	    		
-	    		//float totalAsk = price * quantity;
-	    		//float totalBid = price * 
+	    		float totalAsk = price * quantity;
 	    		
-	    		WalletObject buyerWallet = Market.database.getWalletCollection().findOne("wallet", buyOrder.wallet);
-	    		WalletObject sellerWallet = Market.database.getWalletCollection().findOne("wallet", sellOrder.wallet);
+	    		WalletObject buyerWallet_from = Market.database.getWalletCollection().findOne("wallet", buyOrder.wallet_from);
+	    		WalletObject sellerWallet_from = Market.database.getWalletCollection().findOne("wallet", sellOrder.wallet_from);
 	    		
-	    		//sellerWallet.quantity += totalAsk;
-	    		buyerWallet.quantity += quantity;
+	    		WalletObject buyerWallet_to = Market.database.getWalletCollection().findOne("wallet", buyOrder.wallet_to);
+	    		WalletObject sellerWallet_to = Market.database.getWalletCollection().findOne("wallet", sellOrder.wallet_to);
+	    		
+	    		sellerWallet_to.quantity += totalAsk;
+	    		buyerWallet_to.quantity += quantity;
 	    		
 	    		buyOrder.quantity -= quantity;
-	    		//sellOrder.quantity -= quantity;
+	    		sellOrder.quantity -= quantity;
 	    		
-	    		if (sellerWallet.quantity <= 0)
+	    		sellerWallet_from.quantity -= quantity;
+	    		buyerWallet_from.quantity -= totalAsk;
+	    		
+	    		Market.database.getOrderCollection().save(sellOrder);
+	    		Market.database.getOrderCollection().save(buyOrder);
+	    		Market.database.getWalletCollection().save(buyerWallet_from);
+	    		Market.database.getWalletCollection().save(sellerWallet_from);
+	    		Market.database.getWalletCollection().save(buyerWallet_to);
+	    		Market.database.getWalletCollection().save(sellerWallet_to);
+	    		
+	    		market.last = price;
+	    		Market.database.getMarketCollection().save(market);
+	    		
+	    		System.out.println("ORDER executed " + market.name + " " + quantity + " at " + totalAsk);
+	    		
+	    		if (sellOrder.quantity <= 0)
 	    			Market.database.getOrderCollection().deleteById(sellOrder.getId());
-	    		if (buyOrder.quantity == 0)
-		    		Market.database.getOrderCollection().deleteById(buyOrder.getId());
-	    		return ;
 	    	}
+	    	if (buyOrder.quantity <= 0)
+	    		Market.database.getOrderCollection().deleteById(buyOrder.getId());
 	    }
 	}
 	

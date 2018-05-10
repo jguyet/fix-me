@@ -21,19 +21,13 @@ public class MarketProperties {
 	 * username symgygy
 	 * jguyet@student.42.fr
 	 */
-	
 	public static final String	DATABASE_MONGO_DB_HOSTNAME = "ds115740.mlab.com";
-	
 	public static final int		DATABASE_MONGO_DB_PORT = 15740;
-	
 	/**
 	 * MONGO_DB CREDENTIALS
 	 */
-	
 	public static final String	DATABASE_MONGO_DB_CREDENTIAL_USER_NAME = "root";
-	
 	public static final String	DATABASE_MONGO_DB_CREDENTIAL_PASSWORD = "123";
-	
 	public static final String	DATABASE_MONGO_DB = "market001";
 	
 	/**

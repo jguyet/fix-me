@@ -3,6 +3,7 @@ package org.fixme.router.servers.broker.handler;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.BuyOrderMessage;
 import org.fixme.core.protocol.messages.CreateWalletMessage;
+import org.fixme.core.protocol.messages.GetOrdersMessage;
 import org.fixme.core.protocol.messages.GetWalletContentMessage;
 import org.fixme.core.protocol.messages.MarketDataRequestMessage;
 import org.fixme.core.protocol.messages.RejectedRequestMessage;
@@ -19,7 +20,7 @@ public class RouterBrokerMessageHandler {
 	public static boolean MarketDataRequestMessageHandler(SocketChannel client, MarketDataRequestMessage message) {
 		
 		if (MarketServerHandler.markets.size() == 0) {
-			//TODO no market online
+			client.write(new RejectedRequestMessage(client.getUid(), "No market online"));
 			return true ;
 		}
 		for (SocketChannel market : MarketServerHandler.markets.values()) {
@@ -66,6 +67,18 @@ public class RouterBrokerMessageHandler {
 	
 	@MethodMessageHandler(GetWalletContentMessage.MESSAGE_ID)
 	public static boolean GetWalletContentMessageHandler(SocketChannel client, GetWalletContentMessage message) {
+		Route route = MarketServerHandler.marketRoutingTable.searchRoute(message.marketId);
+		
+		if (route == null) {
+			client.write(new RejectedRequestMessage(client.getUid(), "Market " + message.marketId + " doesn't exists"));
+			return true ;
+		}
+		route.dest.write(message);
+		return true;
+	}
+	
+	@MethodMessageHandler(GetOrdersMessage.MESSAGE_ID)
+	public static boolean GetOrdersMessageHandler(SocketChannel client, GetOrdersMessage message) {
 		Route route = MarketServerHandler.marketRoutingTable.searchRoute(message.marketId);
 		
 		if (route == null) {

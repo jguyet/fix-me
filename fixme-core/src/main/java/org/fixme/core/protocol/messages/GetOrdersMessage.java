@@ -2,39 +2,34 @@ package org.fixme.core.protocol.messages;
 
 import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.core.protocol.types.WalletObject;
 import org.fixme.core.utils.Json;
 
-@AnnotationMessageID(WalletContentMessage.MESSAGE_ID)
-public class WalletContentMessage extends NetworkMessage {
-	
-	public static final int MESSAGE_ID = 1009;
+@AnnotationMessageID(GetOrdersMessage.MESSAGE_ID)
+public class GetOrdersMessage extends NetworkMessage {
+
+	public static final int MESSAGE_ID = 1012;
 	
 	//##############################
 	//@VARIABLES SECTION ---------->
 	//##############################
+	public int brokerId;
 	
-	public int			brokerId;
+	public int marketId;
 	
-	public int			marketId;
-	
-	public WalletObject	wallet;
-	
-	public float		in_orders;
+	public String market;
 	
 	//##############################################################################
-	//@CONSTRUCTOR SECTION -------------------------------------------------------->
+	//@CONTRUCTOR SECTION --------------------------------------------------------->
 	//##############################################################################
 	
-	public WalletContentMessage(Json buffer) {
+	public GetOrdersMessage(Json buffer) {
 		super(buffer);
 	}
 	
-	public WalletContentMessage(int brokerId, int marketId, WalletObject wallet, float in_orders) {
+	public GetOrdersMessage(int brokerId, int marketId, String market) {
 		this.brokerId = brokerId;
 		this.marketId = marketId;
-		this.wallet = wallet;
-		this.in_orders = in_orders;
+		this.market = market;
 	}
 	
 	//##############################################################################
@@ -48,27 +43,21 @@ public class WalletContentMessage extends NetworkMessage {
 
 	@Override
 	public String getName() {
-		return "WalletContentMessage";
+		return "GetOrdersMessage";
 	}
 
 	@Override
 	public void serialize(Json buffer) {
 		buffer.put("BROKERID", this.brokerId);
 		buffer.put("MARKETID", this.marketId);
-		Json w = new Json();
-		this.wallet.serialize(w);
-		buffer.put("WALLET", w);
-		buffer.put("IN_ORDERS", this.in_orders);
+		buffer.put("MARKET", this.market);
 	}
 
 	@Override
 	public void deserialize(Json buffer) {
 		this.brokerId = buffer.getInt("BROKERID");
 		this.marketId = buffer.getInt("MARKETID");
-		WalletObject w = new WalletObject();
-		w.deserialize(buffer.getJson("WALLET"));
-		this.wallet = w;
-		this.in_orders = buffer.getFloat("IN_ORDERS");
+		this.market = buffer.getString("MARKET");
 	}
 
 	@Override
@@ -78,4 +67,5 @@ public class WalletContentMessage extends NetworkMessage {
 		json.put("CLASS", this.getName());
 		return json.toString();
 	}
+
 }

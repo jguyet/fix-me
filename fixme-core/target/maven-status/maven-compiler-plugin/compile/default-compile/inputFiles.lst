@@ -10,14 +10,17 @@
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/Database.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/MarketDataRequestMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkProtocolMessage.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/utils/Utils.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/LoggingProperties.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/NetworkMessageFactory.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/INetworkType.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/NewWalletMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/types/InstrumentObject.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/FixmeSocketChannelManager.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/GetOrdersMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/SellOrderMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/database/collections/BaseCollection.java
+/Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/OrdersMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/AnnotationMessageID.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/GetWalletContentMessage.java
 /Users/jguyet/git/fix-me/fixme-core/src/main/java/org/fixme/core/protocol/messages/BuyOrderMessage.java

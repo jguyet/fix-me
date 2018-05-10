@@ -6,6 +6,7 @@ import org.fixme.broker.prompt.CallBackRequestMessage;
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.MarketDataMessage;
 import org.fixme.core.protocol.messages.NewWalletMessage;
+import org.fixme.core.protocol.messages.OrdersMessage;
 import org.fixme.core.protocol.messages.WalletContentMessage;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
 import org.fixme.core.reflection.handler.MethodMessageHandler;
@@ -40,6 +41,16 @@ public class MarketInformationsHandler {
 	@MethodMessageHandler(NewWalletMessage.MESSAGE_ID)
 	public static boolean NewWalletMessageHandler(BrokerPrompt prompt, SocketChannel ch, NewWalletMessage message) {
 		
+		if (Broker.callback != null) {
+			CallBackRequestMessage callback = Broker.callback;
+			Broker.callback = null;
+			callback.onExecutedRequest(ch, message);
+		}
+		return true;
+	}
+	
+	@MethodMessageHandler(OrdersMessage.MESSAGE_ID)
+	public static boolean OrdersMessageHandler(BrokerPrompt prompt, SocketChannel ch, OrdersMessage message) {
 		if (Broker.callback != null) {
 			CallBackRequestMessage callback = Broker.callback;
 			Broker.callback = null;

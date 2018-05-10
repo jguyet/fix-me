@@ -26,9 +26,9 @@ public class BuyOrderMessage extends NetworkMessage {
 	
 	public float		price;
 	
-	public String		walletBuyer;
+	public String		wallet_from;
 	
-	public String		walletSeller;
+	public String		wallet_to;
 	
 	//##############################################################################
 	//@CONTRUCTOR SECTION --------------------------------------------------------->
@@ -38,14 +38,14 @@ public class BuyOrderMessage extends NetworkMessage {
 		super(buffer);
 	}
 	
-	public BuyOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String walletBuyer, String walletSeller) {
+	public BuyOrderMessage(int brokerId, int marketId, String instrument, float quantity, float price, String wallet_from, String wallet_to) {
 		this.brokerId = brokerId;
 		this.marketId = marketId;
 		this.instrument = instrument;
 		this.quantity = quantity;
 		this.price = price;
-		this.walletBuyer = walletBuyer;
-		this.walletSeller = walletSeller;
+		this.wallet_from = wallet_from;
+		this.wallet_to = wallet_to;
 	}
 	
 	//##############################################################################
@@ -70,8 +70,8 @@ public class BuyOrderMessage extends NetworkMessage {
 		buffer.put("INSTRUMENT", this.instrument);
 		buffer.put("QUANTITY", this.quantity);
 		buffer.put("PRICE", this.price);
-		buffer.put("WALLET_BUYER", this.walletBuyer);
-		buffer.put("WALLET_SELLER", this.walletSeller);
+		buffer.put("WALLET_FROM", this.wallet_from);
+		buffer.put("WALLET_TO", this.wallet_to);
 	}
 
 	@Override
@@ -82,14 +82,15 @@ public class BuyOrderMessage extends NetworkMessage {
 		this.instrument = buffer.getString("INSTRUMENT");
 		this.quantity = buffer.getFloat("QUANTITY");
 		this.price = buffer.getFloat("PRICE");
-		this.walletBuyer = buffer.getString("WALLET_BUYER");
-		this.walletSeller = buffer.getString("WALLET_SELLER");
+		this.wallet_from = buffer.getString("WALLET_FROM");
+		this.wallet_to = buffer.getString("WALLET_TO");
 	}
 
 	@Override
 	public String toString() {
 		Json json = new Json();
 		this.serialize(json);
+		json.put("CLASS", this.getName());
 		return json.toString();
 	}
 
