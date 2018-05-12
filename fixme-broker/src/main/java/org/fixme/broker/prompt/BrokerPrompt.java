@@ -141,22 +141,22 @@ public class BrokerPrompt {
 				
 				for (int i = 0; i < 5; i++) {
 					if (m.bids.length > i)
-						bidsline[i] = String.format("%12s %12s", toStringFloat(m.bids[i].quantity), toStringFloat(m.bids[i].price));
+						bidsline[i] = String.format("%15s %15s", toStringFloat(m.bids[i].quantity), toStringFloat(m.bids[i].price));
 					else
-						bidsline[i] = "            " + " " + "            ";
+						bidsline[i] = "               " + " " + "               ";
 				}
 				
 				for (int i = 0; i < 5; i++) {
 					if (m.asks.length > i)
-						asksline[i] = String.format("%12s %12s", toStringFloat(m.asks[i].price), toStringFloat(m.asks[i].quantity));
+						asksline[i] = String.format("%15s %15s", toStringFloat(m.asks[i].price), toStringFloat(m.asks[i].quantity));
 					else
-						asksline[i] = "            " + " " + "            ";
+						asksline[i] = "               " + " " + "               ";
 				}
 				
 				String sellmoney = marketname.split("_")[0];
 				String buymoney = marketname.split("_")[1];
 				
-				System.out.printf("%12s %12s  %12s  %12s %12s", "SIZE(" + buymoney + ")", "BID(" + sellmoney + ")", marketname, "ASK(" + sellmoney + ")", "SIZE(" + buymoney + ")");
+				System.out.printf("%-15s %-15s  %-15s  %-15s %-15s", "SIZE(" + buymoney + ")", "BID(" + sellmoney + ")", marketname, "ASK(" + sellmoney + ")", "SIZE(" + buymoney + ")");
 				System.out.println("");
 				for (int i = 0; i < 5; i++) {
 					System.out.println(bidsline[i] + "  " + "            " + "  " + asksline[i]);
@@ -208,7 +208,8 @@ public class BrokerPrompt {
 
 			@Override
 			public void onExecutedRequest(SocketChannel channel, NetworkMessage message) {
-				System.out.println(message.toString());
+				ExecutedRequestMessage m = (ExecutedRequestMessage)message;
+				System.out.println(m.response);
 				waitResponse = false;
 			}
 

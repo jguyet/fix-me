@@ -15,11 +15,9 @@ public class MarketProperties {
 	public static final int		SOCKET_SERVER_ROUTER_MARKET_PORT = 5001;
 	
 	/**
-	 * //mongodb://<dbuser>:<dbpassword>@ds115740.mlab.com:15740/market001
 	 * MONGO_DB HOSTNAME
 	 * mlab.com
-	 * username symgygy
-	 * jguyet@student.42.fr
+	 * mongodb://<dbuser>:<dbpassword>@ds115740.mlab.com:15740/market001
 	 */
 	public static final String	DATABASE_MONGO_DB_HOSTNAME = "ds115740.mlab.com";
 	public static final int		DATABASE_MONGO_DB_PORT = 15740;

@@ -6,11 +6,8 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.fixme.core.client.SocketChannel;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.protocol.NetworkMessageFactory;
 import org.fixme.core.protocol.NetworkMessageHeader;

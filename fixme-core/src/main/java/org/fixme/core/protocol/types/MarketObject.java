@@ -1,9 +1,5 @@
 package org.fixme.core.protocol.types;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.types.ObjectId;
 import org.fixme.core.database.collections.BaseCollection;
 import org.fixme.core.protocol.INetworkType;
 import org.fixme.core.utils.Json;

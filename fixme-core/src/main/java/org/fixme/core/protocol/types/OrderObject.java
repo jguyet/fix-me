@@ -1,7 +1,5 @@
 package org.fixme.core.protocol.types;
 
-import java.util.Map;
-
 import org.fixme.core.database.collections.BaseCollection;
 import org.fixme.core.protocol.INetworkType;
 import org.fixme.core.utils.Json;

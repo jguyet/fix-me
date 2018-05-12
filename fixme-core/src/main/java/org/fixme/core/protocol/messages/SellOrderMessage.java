@@ -1,8 +1,5 @@
 package org.fixme.core.protocol.messages;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-
 import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.utils.Json;

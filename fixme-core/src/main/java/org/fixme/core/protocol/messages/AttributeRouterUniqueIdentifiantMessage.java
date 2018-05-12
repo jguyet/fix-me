@@ -1,11 +1,8 @@
 package org.fixme.core.protocol.messages;
 
-import java.util.Map;
-
 import javax.validation.constraints.Min;
 
 import org.fixme.core.protocol.AnnotationMessageID;
-import org.fixme.core.protocol.ByteArrayBuffer;
 import org.fixme.core.protocol.NetworkMessage;
 import org.fixme.core.utils.Json;
 

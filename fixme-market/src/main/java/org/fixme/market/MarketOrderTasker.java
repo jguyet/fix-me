@@ -10,8 +10,6 @@ import org.fixme.core.protocol.types.WalletObject;
 import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.QueryResults;
 
-import ch.qos.logback.core.db.BindDataSourceToJNDIAction;
-
 public class MarketOrderTasker implements Runnable {
 
 	private Thread _t;
@@ -34,6 +32,10 @@ public class MarketOrderTasker implements Runnable {
 			}
 			try { Thread.sleep(100); } catch (Exception e) {}
 		}
+	}
+	
+	public void stop() {
+		
 	}
 	
 	private void checkDatabaseOrders() {

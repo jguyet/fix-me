@@ -1,8 +1,5 @@
 package org.fixme.core.protocol;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 /**
  * NetworkMessageHeader class
  * @author jguyet

@@ -1,10 +1,7 @@
 package org.fixme.core.protocol.messages;
 
-import java.util.ArrayList;
-
 import org.fixme.core.protocol.AnnotationMessageID;
 import org.fixme.core.protocol.NetworkMessage;
-import org.fixme.core.protocol.types.MarketObject;
 import org.fixme.core.protocol.types.OrderObject;
 import org.fixme.core.utils.Json;
 import org.json.JSONArray;

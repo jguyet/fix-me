@@ -1,10 +1,5 @@
 package org.fixme.core.protocol;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.fixme.core.protocol.utils.CheckSum;
 import org.fixme.core.utils.Json;
 

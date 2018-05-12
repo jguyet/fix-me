@@ -52,7 +52,7 @@ public class Market
     	while (stopped == false) {
     		try { Thread.sleep(500); } catch(Exception e) { e.printStackTrace(); }
     	}
-    	
+    	marketOrderTasker.stop();
     	socket.stop();
     	database.closeDatabaseConnection();
     }

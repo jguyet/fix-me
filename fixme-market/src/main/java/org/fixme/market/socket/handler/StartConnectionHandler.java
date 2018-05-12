@@ -2,7 +2,6 @@ package org.fixme.market.socket.handler;
 
 import org.fixme.core.client.SocketChannel;
 import org.fixme.core.protocol.messages.AttributeRouterUniqueIdentifiantMessage;
-import org.fixme.core.protocol.messages.MarketDataRequestMessage;
 import org.fixme.core.reflection.handler.ClassMessageHandler;
 import org.fixme.core.reflection.handler.MethodMessageHandler;
 

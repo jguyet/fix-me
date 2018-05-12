@@ -381,9 +381,6 @@ public class Json {
 	 */
 	public float getFloat(String key, int ... args) throws JSONException
 	{
-		int precision = 8;
-		if (args.length == 1 && args[0] >= 0)
-			precision = args[0];
 		try {
 			return (new Float(this.obj.getFloat(key)));
 		} catch (Exception e)

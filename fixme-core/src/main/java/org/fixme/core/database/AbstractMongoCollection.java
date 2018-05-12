@@ -10,6 +10,7 @@ public abstract class AbstractMongoCollection<Document> {
 	
 	private MongoDatabase		mongoDB;
 	
+	@SuppressWarnings("unchecked")
 	public AbstractMongoCollection(MongoDatabase mongoDB, String collectionName) {
 		this.mongoDB = mongoDB;
 		this.collectionName = collectionName;

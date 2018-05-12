@@ -1,8 +1,5 @@
 package org.fixme.core.protocol;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.fixme.core.utils.Json;
 
 /**
