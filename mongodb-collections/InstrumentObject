@@ -1,0 +1,6 @@
+{"_id":{"$oid":"5af25ae7d0419ba60c41de5d"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"USDT","fullname":"USDT"}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de5e"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"BTC","fullname":"BitCoin"}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de5f"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"ETH","fullname":"Ethereum"}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de60"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"XRP","fullname":"Ripple"}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de61"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"LTC","fullname":"Litecoin"}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de62"},"className":"org.fixme.core.protocol.types.InstrumentObject","name":"NEO","fullname":"Neo"}

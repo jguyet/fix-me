@@ -1,0 +1,6 @@
+{"_id":{"$oid":"5af25ae7d0419ba60c41de63"},"className":"org.fixme.core.protocol.types.MarketObject","name":"BTC_ETH","fullname":"BitCoin","last":0.0017999999690800905,"buy":0.08148650079965591,"sell":0.0820000022649765,"marketID":-1}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de65"},"className":"org.fixme.core.protocol.types.MarketObject","name":"BTC_LTC","fullname":"BitCoin","last":0.0,"buy":0.016213109716773033,"sell":0.016321999952197075,"marketID":-1}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de66"},"className":"org.fixme.core.protocol.types.MarketObject","name":"BTC_NEO","fullname":"BitCoin","last":0.0,"buy":0.0075134700164198875,"sell":0.007583470083773136,"marketID":-1}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de68"},"className":"org.fixme.core.protocol.types.MarketObject","name":"ETH_LTC","fullname":"Ethereum","last":0.0,"buy":0.20038600265979767,"sell":0.20209328830242157,"marketID":-1}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de69"},"className":"org.fixme.core.protocol.types.MarketObject","name":"ETH_NEO","fullname":"Ethereum","last":0.0,"buy":0.09309999644756317,"sell":0.0936741977930069,"marketID":-1}
+{"_id":{"$oid":"5af25ae7d0419ba60c41de6a"},"className":"org.fixme.core.protocol.types.MarketObject","name":"USDT_BTC","fullname":"USDT","last":0.0,"buy":8474.0,"sell":8489.7978515625,"marketID":-1}
